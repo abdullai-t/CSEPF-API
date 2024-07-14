@@ -1,4 +1,4 @@
-.PHONY: essential-folders init start migrate
+.PHONY: essential-folders init start migrate su
 
 essential-folders:
 	@if [ ! -d ".csepf" ]; then mkdir .csepf; fi
@@ -17,3 +17,7 @@ migrate:
 	@echo "Running migrations ..."
 	python manage.py makemigrations
 	python manage.py migrate
+
+su:
+	@echo "Creating superuser ..."
+	python manage.py createsuperuser
