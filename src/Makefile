@@ -1,19 +1,19 @@
+.PHONY: essential-folders init start migrate
+
 essential-folders:
 	@if [ ! -d ".csepf" ]; then mkdir .csepf; fi
 	@if [ ! -d ".csepf/creds" ]; then mkdir .csepf/creds; fi
-.PHONY: essential-folders
+
 
 init: essential-folders
 	pip install -r requirements.txt
-.PHONY: init
+
 
 start: essential-folders
 	@echo "Initializing server now ..."
 	python manage.py runserver
-.PHONY: start
 
 migrate:
 	@echo "Running migrations ..."
 	python manage.py makemigrations
 	python manage.py migrate
-.PHONY: migrate
