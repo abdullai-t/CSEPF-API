@@ -24,13 +24,16 @@ load_dotenv()
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# https://*.massenergize.org, https://*.massenergize.com, https://*.massenergize.dev, https://*.massenergize.test
+DEBUG = True
+CSRF_TRUSTED_ORIGINS = ["http://*.csepf.test"]
 
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
 INSTALLED_APPS = [
+	'django_hosts',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -44,16 +47,22 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+	'django_hosts.middleware.HostsRequestMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
+	# 'django.middleware.csrf.CsrfViewMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	
+	"_main_.utils.middlewares.auth_middleware.AuthMiddleware",
+	'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
 ROOT_URLCONF = '_main_.urls'
+ROOT_HOSTCONF = '_main_.hosts'
+DEFAULT_HOST = 'api'
 
 TEMPLATES = [
 	{
@@ -72,6 +81,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = '_main_.wsgi.application'
+
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

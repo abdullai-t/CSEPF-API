@@ -9,7 +9,6 @@ urlpatterns = [
     path('mc/',include('_main_.su_urls')),
     path('api/', include('api.urls')),
     path('', include('admin_site.urls')),
-    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

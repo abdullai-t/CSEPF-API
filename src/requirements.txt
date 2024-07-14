@@ -6,3 +6,5 @@ python-dotenv==0.13.0
 psycopg2-binary==2.9.6
 django-hosts==6.0
 django-cors-headers==3.4.0
+dateutils==0.6.12
+PyJWT==1.7.1
