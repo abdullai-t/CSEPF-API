@@ -1,3 +1,4 @@
 .idea/*
 src/.env
 src/db.sqlite3
+src/.csepf/*
