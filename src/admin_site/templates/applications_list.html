@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">{% block header %}Applications List{% endblock %}</h1>
+    <form method="get" action="{% url 'applications' %}" class="mb-4">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search by name or email" class="px-4 py-2 border rounded-lg w-full">
+    </form>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+<!--            <th class="py-2 px-4 border border-gray-300 text-left">Index</th>-->
+            <th class="py-2 px-4 border border-gray-300 text-left">Name</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">Email</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">School</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">Program</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">Cohort</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">Status</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in page_obj %}
+                <tr>
+<!--          <td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>-->
+            <td class="py-2 px-4 border border-gray-300">{{ application.full_name }}</td>
+            <td class="py-2 px-4 border border-gray-300">{{ application.email }}</td>
+            <td class="py-2 px-4 border border-gray-300">{{ application.school }}</td>
+            <td class="py-2 px-4 border border-gray-300">{{ application.program }}</td>
+            <td class="py-2 px-4 border border-gray-300">{{ application.cohort }}</td>
+            <td class="py-2 px-4 border border-gray-300">{{ application.status }}</td>
+            <td class="py-2 px-4 border border-gray-300">
+                <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateModal('{{ application.id }}')">
+                    <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Update
+                </button>
+                <button class="text-red-500 hover:text-red-700" onclick="deleteApplication('{{ application.id }}')">
+                    <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    Delete
+                </button>
+            </td>
+        </tr>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">
+        <span class="text-sm text-gray-700">
+            Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} applications
+        </span>
+        <div class="inline-flex mt-2">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-l-lg">First</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-300 text-gray-700">Previous</a>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <span class="px-3 py-1 bg-blue-500 text-white">{{ num }}</span>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-300 text-gray-700">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-300 text-gray-700">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-r-lg">Last</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal HTML -->
+<div id="updateModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-4">Update Status</h2>
+        <form id="updateForm" method="post" action="{% url 'update_status' %}">
+            {% csrf_token %}
+            <input type="hidden" name="application_id" id="applicationId">
+            <label for="status" class="block mb-2">Status</label>
+            <select name="status" id="status" class="block w-full p-2 border rounded-lg mb-4">
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Update</button>
+            <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded-lg" onclick="closeUpdateModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function openUpdateModal(applicationId) {
+        document.getElementById('applicationId').value = applicationId;
+        document.getElementById('updateModal').classList.remove('hidden');
+    }
+
+    function closeUpdateModal() {
+        document.getElementById('updateModal').classList.add('hidden');
+    }
+
+    function deleteApplication(applicationId) {
+        if (confirm('Are you sure you want to delete this application?')) {
+            // Implement the delete functionality here
+            // You can use AJAX or a form submission to delete the application
+        }
+    }
+</script>
+
+{% endblock %}
+
+

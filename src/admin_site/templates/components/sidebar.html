@@ -1,0 +1,43 @@
+<!-- base.html -->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Materialize css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Your custom css (optional) -->
+  <link href="{% static 'css/mystyles.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+  <!-- Always shows a header, even in smaller screens. -->
+  <header>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+    </div>
+  </header>
+  <div class="row">
+    <!-- Persistent drawer, only shown on larger screens -->
+    <nav id="slide-out" class="col s3 m3 l3 sidenav sidenav-fixed teal lighten-2">
+      <ul>
+        <li><a href="#!">First Sidebar Link</a></li>
+        <li><a href="#!">Second Sidebar Link</a></li>
+      </ul>
+    </nav>
+    <main class="col s12 m9 l9">
+      {% block content %}
+      <!-- The specific content for each page will be provided here -->
+      {% endblock %}
+    </main>
+  </div>
+
+  <!-- Materialize js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>

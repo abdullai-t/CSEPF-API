@@ -1,0 +1,10 @@
+.fixed-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px; /* Adjust the width as needed */
+    background-color: #f8f9fa; /* Adjust the background color as needed */
+    overflow-y: auto;
+    z-index: 1000; /* Ensure it stays on top */
+}

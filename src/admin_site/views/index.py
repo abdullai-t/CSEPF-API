@@ -1,9 +1,11 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-
+from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, login, logout
 from database.models import Application, Fellow, Presentation
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url="/login/")
 def index(request):
 	num_applications = Application.objects.count()
 	num_presentations = Presentation.objects.count()
@@ -15,6 +17,28 @@ def index(request):
 		'num_fellows': num_fellows
 	}
 	return render(request, 'home.html', context)
+
+
+def login_view(request):
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		next_url = request.POST.get('next', 'home')
+		
+		user = authenticate(request, username=username, password=password)
+		
+		if user is not None:
+			login(request, user)
+			return redirect(next_url)
+		else:
+			return render(request, 'login.html', {'error': 'Invalid username or password'})
+		
+	return render(request, 'login.html')
+
+
+def logout_view(request):
+	logout(request)
+	return redirect('login')
 
 
 def handler404(request, exception):

@@ -1,17 +1,7 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block content %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard</title>
-  <!-- Add your CSS here -->
-  <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
-</head>
-
-<body>
 <h1>Admin Dashboard</h1>
 
 <div class="dashboard-content">
@@ -28,6 +18,4 @@
     <p>{{ num_fellows }}</p>
   </div>
 </div>
-</body>
-
-</html>
+{% endblock %}
