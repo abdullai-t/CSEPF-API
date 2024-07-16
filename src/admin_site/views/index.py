@@ -29,7 +29,7 @@ def login_view(request):
 		
 		if user is not None:
 			login(request, user)
-			return redirect(next_url)
+			return redirect("home")
 		else:
 			return render(request, 'login.html', {'error': 'Invalid username or password'})
 		

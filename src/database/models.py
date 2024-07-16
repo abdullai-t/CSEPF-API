@@ -9,7 +9,7 @@ class BaseModel(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 	is_deleted = models.BooleanField(default=True)
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	info = models.JSONField(default=dict)
+	info = models.JSONField(default=dict, blank=True, null=True)
 	
 	class Meta:
 		abstract = True
@@ -141,7 +141,7 @@ class PolicySubTopic(BaseModel):
 	description = models.TextField(blank=True, null=True)
 	
 	def __str__(self) -> str:
-		return self.title
+		return self.title + " (" + self.topic.title + ")"
 	
 	def to_json(self, full=False, tiny_info=False) -> dict:
 		data = super().to_json()
@@ -167,7 +167,7 @@ class Testimonial(BaseModel):
 	is_featured = models.BooleanField(default=False)
 	
 	def __str__(self) -> str:
-		return self.user.full_name + " - " + self.content[:10]
+		return self.user.user.full_name + " - " + self.content[:10]
 	
 	def to_json(self, full=False, tiny_info=False) -> dict:
 		data = super().to_json()

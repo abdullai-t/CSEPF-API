@@ -1,0 +1,40 @@
+
+{% load form_helpers %}
+<div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white w-1/3 p-4 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4" id="modal-title">Add Testimonial</h2>
+        <form method="post" action="{% url 'add_testimonial' %}" id="testimonial-form-id" class="space-y-4">
+            {% csrf_token %}
+            {% for field in form %}
+
+            {% if field.name == 'is_featured' %}
+                <div class="mb-4">
+                    <div class="mt-1">
+                        {{ field }} <label for="{{ field.id_for_label }}" class=" text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    </div>
+                    {% if field.help_text %}
+                        <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% else %}
+
+                <div class="mb-4">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {% if field.widget.attrs.class %}
+                        {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
+                    {% else %}
+                        {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
+                    {% endif %}
+                    {% if field.help_text %}
+                        <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% endfor %}
+            <div class="flex justify-end">
+                <button type="button" onclick="clearModalForm()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                <button type="submit" id="submit-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Add Testimonial</button>
+            </div>
+        </form>
+    </div>
+</div>

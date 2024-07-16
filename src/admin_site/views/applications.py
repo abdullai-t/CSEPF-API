@@ -31,10 +31,7 @@ def update_status(request):
         return redirect('applications')
     
     
-def delete_application(request):
-    if request.method == 'POST':
-        application_id = request.POST.get('application_id')
-        application = Application.objects.get(id=application_id)
+def delete_application(request, id):
+        application = Application.objects.get(id=id)
         application.delete()
         return redirect('applications')
-    return redirect('applications')
