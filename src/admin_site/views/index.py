@@ -11,10 +11,13 @@ def index(request):
 	num_presentations = Presentation.objects.count()
 	num_fellows = Fellow.objects.count()
 	
+	user = request.user
+	
 	context = {
 		'num_applications': num_applications,
 		'num_presentations': num_presentations,
-		'num_fellows': num_fellows
+		'num_fellows': num_fellows,
+		"user": user
 	}
 	return render(request, 'home.html', context)
 

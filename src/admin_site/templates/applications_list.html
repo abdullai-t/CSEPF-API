@@ -5,17 +5,19 @@
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">{% block header %}Applications List{% endblock %}</h1>
     <form method="get" action="{% url 'applications' %}" class="mb-4">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search by name or email" class="px-4 py-2 border rounded-lg w-full">
+        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search by name or email" class="px-4 py-2 border rounded-lg w-full">
     </form>
     <div class="overflow-x-auto">
         <table class="min-w-full bg-white">
             <thead>
                 <tr>
 <!--            <th class="py-2 px-4 border border-gray-300 text-left">Index</th>-->
+            <th class="py-2 px-4 border border-gray-300 text-left">Image</th>
             <th class="py-2 px-4 border border-gray-300 text-left">Name</th>
             <th class="py-2 px-4 border border-gray-300 text-left">Email</th>
             <th class="py-2 px-4 border border-gray-300 text-left">School</th>
             <th class="py-2 px-4 border border-gray-300 text-left">Program</th>
+            <th class="py-2 px-4 border border-gray-300 text-left">Resume</th>
             <th class="py-2 px-4 border border-gray-300 text-left">Cohort</th>
             <th class="py-2 px-4 border border-gray-300 text-left">Status</th>
             <th class="py-2 px-4 border border-gray-300 text-left">Action</th>
@@ -25,10 +27,24 @@
                 {% for application in page_obj %}
                 <tr>
 <!--          <td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>-->
+            <td class="py-2 px-4 border border-gray-300">
+                {% if application.picture %}
+                    <img src="{{ application.picture.url }}" alt="{profile" class="w-10 h-10 rounded-full">
+                {% else %}
+                    <img src="https://i.pravatar.cc/300" alt="profile" class="w-10 h-10 rounded-full">
+                {% endif %}
+            </td>
             <td class="py-2 px-4 border border-gray-300">{{ application.full_name }}</td>
             <td class="py-2 px-4 border border-gray-300">{{ application.email }}</td>
             <td class="py-2 px-4 border border-gray-300">{{ application.school }}</td>
             <td class="py-2 px-4 border border-gray-300">{{ application.program }}</td>
+            <td class="py-2 px-4 border border-gray-300">
+                {% if application.resume %}
+                    <a href="{{ application.resume.url }}" target="_blank" class="text-blue-500 hover:text-blue-700">View</a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
             <td class="py-2 px-4 border border-gray-300">{{ application.cohort }}</td>
             <td class="py-2 px-4 border border-gray-300">{{ application.status }}</td>
             <td class="py-2 px-4 border border-gray-300">
@@ -36,7 +52,7 @@
                     <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    Update
+                    Edit
                 </button>
                 <button class="text-red-500 hover:text-red-700" onclick="deleteApplication('{{ application.id }}')">
                     <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

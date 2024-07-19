@@ -9,7 +9,7 @@ class BaseModel(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 	is_deleted = models.BooleanField(default=True)
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-	info = models.JSONField(default=dict, blank=True, null=True)
+	info = models.JSONField(default=dict, blank=True, null=True) #json of social media names and links, etc
 	
 	class Meta:
 		abstract = True
@@ -64,6 +64,8 @@ class Application(BaseModel):
 	address = models.CharField(max_length=255)
 	status = models.CharField(max_length=255, default='pending')
 	cohort = models.CharField(max_length=255, default=datetime.now().year)
+	resume = models.FileField(upload_to='resumes', null=True, blank=True)
+	picture = models.ImageField(upload_to='applicant_pictures', null=True, blank=True)
 	
 	def __str__(self) -> str:
 		return self.full_name + " - " + self.email
@@ -78,7 +80,9 @@ class Application(BaseModel):
 			"program": self.program,
 			"address": self.address,
 			"status": self.status,
-			"cohort": self.cohort
+			"cohort": self.cohort,
+			"resume": self.resume.url if self.resume else None,
+			"picture": self.picture.url if self.picture else None
 		})
 		return data
 	
@@ -156,23 +160,53 @@ class PolicySubTopic(BaseModel):
 		verbose_name = 'Policy Sub Topic'
 		verbose_name_plural = 'Policy Sub Topics'
 		db_table = "policy_sub_topics"
+		
+
+class Project(BaseModel):
+	fellow = models.ForeignKey(Fellow, on_delete=models.CASCADE, related_name='projects')
+	title = models.CharField(max_length=255)
+	summary = models.TextField(blank=True, null=True)
+	document = models.FileField(upload_to='projects', null=True, blank=True)
+	topics = models.ManyToManyField(PolicySubTopic, related_name='projects')
+	is_featured = models.BooleanField(default=False)
+	
+	def __str__(self) -> str:
+		return self.title
+	
+	def to_json(self, full=False, tiny_info=False) -> dict:
+		data = super().to_json()
+		data.update({
+			"title": self.title,
+			"description": self.summary,
+			"media": self.media.url if self.media else None,
+			"tags": [tag.to_json() for tag in self.tags.all()],
+			"is_published": self.is_published,
+			"is_featured": self.is_featured
+		})
+		return data
+	
+	class Meta:
+		verbose_name = 'Project'
+		verbose_name_plural = 'Projects'
+		db_table = "projects"
+		ordering = ['-created_at']
 
 
 class Testimonial(BaseModel):
-	user = models.ForeignKey(Fellow, on_delete=models.CASCADE, related_name='testimonials')
+	fellow = models.ForeignKey(Fellow, on_delete=models.CASCADE, related_name='testimonials')
 	content = models.TextField()
-	media = models.ImageField(upload_to='testimonials', null=True, blank=True)
+	media = models.FileField(upload_to='testimonials', null=True, blank=True)
 	tags = models.ManyToManyField(PolicySubTopic)
 	is_published = models.BooleanField(default=False)
 	is_featured = models.BooleanField(default=False)
 	
 	def __str__(self) -> str:
-		return self.user.user.full_name + " - " + self.content[:10]
+		return self.fellow.user.full_name + " - " + self.content[:10]
 	
 	def to_json(self, full=False, tiny_info=False) -> dict:
 		data = super().to_json()
 		data.update({
-			"user": self.user.to_json(),
+			"user": self.fellow.to_json(),
 			"content": self.content,
 			"tags": [tag.to_json() for tag in self.tags.all()],
 			"is_published": self.is_published,
@@ -216,12 +250,13 @@ class Staff(BaseModel):
 
 class Presentation(BaseModel):
 	title = models.CharField(max_length=255)
-	content = models.TextField(blank=True, null=True)
-	media = models.FileField(upload_to='presentations')
-	tags = models.ManyToManyField(PolicySubTopic, related_name='presentations')
+	summary = models.TextField(blank=True, null=True)
+	document = models.FileField(upload_to='presentations', null=True, blank=True)
 	presenter = models.CharField(max_length=255)
+	email = models.EmailField(blank=True, null=True)
+	picture = models.ImageField(upload_to='presenter_pictures', null=True, blank=True)
+	cohort = models.CharField(max_length=255, default=datetime.now().year)
 	is_published = models.BooleanField(default=False)
-	link = models.URLField(blank=True, null=True)
 	is_featured = models.BooleanField(default=False)
 	
 	def __str__(self) -> str:
@@ -231,13 +266,13 @@ class Presentation(BaseModel):
 		data = super().to_json()
 		data.update({
 			"title": self.title,
-			"media": self.media.url,
-			"tags": [tag.to_json() for tag in self.tags.all()],
+			"media": self.document.url,
 			"is_published": self.is_published,
-			"link": self.link,
 			"presenter": self.presenter,
+			"email": self.email,
+			"picture": self.picture.url if self.picture else None,
 			"is_featured": self.is_featured,
-			"content": self.content,
+			"summary": self.summary,
 		})
 		return data
 	

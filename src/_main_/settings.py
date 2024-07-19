@@ -56,6 +56,7 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.common.CommonMiddleware',
 	
 	"_main_.utils.middlewares.auth_middleware.AuthMiddleware",
 	'django_hosts.middleware.HostsResponseMiddleware',
@@ -103,6 +104,23 @@ DATABASES = {
 	}
 }
 
+#-------- FILE STORAGE CONFIGURATION ---------------------#
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE  = 'storages.backends.s3boto3.S3Boto3Storage'
+#-------- FILE STORAGE CONFIGURATION ---------------------#
+
+
+#-------- AWS CONFIGURATION ---------------------#
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SIGNATURE_VERSION = os.environ.get('AWS_S3_SIGNATURE_VERSION')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 2621440*3
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -136,7 +154,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Simplified static file serving.
+STATICFILES_LOCATION = 'static'
+MEDIAFILES_LOCATION = 'media'
 
 
 # Default primary key field type
