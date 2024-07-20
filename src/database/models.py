@@ -32,8 +32,6 @@ class UserProfile(BaseModel):
 	email = models.EmailField(unique=True)
 	picture = models.FileField(upload_to='user_profile_pictures', null=True, blank=True)
 	phone_number = models.CharField(max_length=20, null=True, blank=True)
-	bio = models.TextField(null=True, blank=True)
-	
 	def __str__(self):
 		return self.full_name + " - " + self.email
 	
@@ -95,6 +93,7 @@ class Application(BaseModel):
 
 class Fellow(BaseModel):
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+	bio = models.TextField(blank=True, null=True)
 	is_completed = models.BooleanField(default=False)
 	cohort = models.CharField(max_length=255, default=datetime.now().year)
 	program = models.CharField(max_length=255)
