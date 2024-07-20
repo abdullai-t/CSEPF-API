@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
-from database.models import Application, Fellow, Presentation
+from database.models import Application, Fellow, Presentation, Project, Staff, Testimonial
 from django.contrib.auth.decorators import login_required
 
 
@@ -10,16 +10,25 @@ def index(request):
 	num_applications = Application.objects.count()
 	num_presentations = Presentation.objects.count()
 	num_fellows = Fellow.objects.count()
+	num_testimonials = Testimonial.objects.count()
+	num_staff = Staff.objects.count()
+	num_projects = Project.objects.count()
+	
 	
 	user = request.user
 	
-	context = {
-		'num_applications': num_applications,
-		'num_presentations': num_presentations,
-		'num_fellows': num_fellows,
-		"user": user
+	data = {
+		'Applications': num_applications,
+		'Presentations': num_presentations,
+		'Fellows': num_fellows,
+		'Testimonials': num_testimonials,
+		'Staff': num_staff,
+		'Projects': num_projects,
+		
 	}
-	return render(request, 'home.html', context)
+	
+	
+	return render(request, 'home.html', {'data': [(key, value) for key, value in data.items()], 'user': user})
 
 
 def login_view(request):

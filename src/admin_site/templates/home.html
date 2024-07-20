@@ -2,20 +2,19 @@
 
 {% block content %}
 
-<h1>Admin Dashboard</h1>
+<h1 class="text-2xl p-4 font-bold text-gray-800">Welcome {{ user.username|capfirst }}</h1>
+<div class="container p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+	{% for key, value in data %}
+		<a href="#"
+		class="flex h-20 flex-col items-center justify-center rounded-md border border-2 border-dashed border-gray-400 transition-colors duration-100 ease-in-out hover:border-gray-400/80">
+		<div class="flex flex-row items-center justify-center">
+			<span class="font-bold text-gray-600"> {{ value}} </span>
+		</div>
 
-<div class="dashboard-content">
-  <div class="card">
-    <h2>Total Applications</h2>
-    <p>{{ num_applications }}</p>
-  </div>
-  <div class="card">
-    <h2>Total Presentations</h2>
-    <p>{{ num_presentations }}</p>
-  </div>
-  <div class="card">
-    <h2>Total Fellows</h2>
-    <p>{{ num_fellows }}</p>
-  </div>
+		<div class="mt-2 text-sm text-gray-400">{{key}}</div>
+	</a>
+	{% endfor %}
+
 </div>
+
 {% endblock %}
