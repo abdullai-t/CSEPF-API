@@ -30,7 +30,7 @@ class BaseModel(models.Model):
 class UserProfile(BaseModel):
 	full_name = models.CharField(max_length=255)
 	email = models.EmailField(unique=True)
-	picture = models.ImageField(upload_to='user_profile_pictures', null=True, blank=True)
+	picture = models.FileField(upload_to='user_profile_pictures', null=True, blank=True)
 	phone_number = models.CharField(max_length=20, null=True, blank=True)
 	bio = models.TextField(null=True, blank=True)
 	

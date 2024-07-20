@@ -1,0 +1,74 @@
+
+<div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white w-1/2 p-4 rounded-lg max-h-[80vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold" id="modal-title">Add Staff Member</h2>
+            <button onclick="closeModal()" class="text-gray-600 hover:text-gray-900">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <form method="post" action="{% url 'add_staff' %}" id="staff-form-id" class="space-y-4" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                <input type="text" id="full_name" name="full_name" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" id="email" name="email" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div class="mb-4">
+                <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                <select id="role" name="role" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    <option value="">Select a role</option>
+                    <option value="admin">Admin</option>
+                    <option value="editor">Editor</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+                <textarea id="bio" name="bio" rows="7" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="picture" class="block text-sm font-medium text-gray-700">Picture</label>
+                <a href="#" target="_blank" id="staff-media-element" class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"></a>
+                <input type="file" id="picture" name="picture" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+<!--            is featured-->
+            <div class="mb-4">
+
+                <input type="checkbox" id="is_featured" name="is_featured" class="mt-1  border border-gray-300 rounded-md shadow-sm p-2">
+                <label for="is_featured" class="text-sm font-medium text-gray-700">Is Featured?</label>
+            </div>
+<!--            social media handles fb linkedin, twitter-->
+            <div class="mb-4">
+                <label for="facebook" class="block text-sm font-medium text-gray-700">Facebook</label>
+                <input type="text" id="facebook" name="facebook" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div class="mb-4">
+                <label for="linkedin" class="block text-sm font-medium text-gray-700">LinkedIn</label>
+                <input type="text" id="linkedin" name="linkedin" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div class="mb-4">
+                <label for="twitter" class="block text-sm font-medium text-gray-700">Twitter</label>
+                <input type="text" id="twitter" name="twitter" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+
+
+            <div class="flex justify-end">
+                <button type="button" onclick="closeModal()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                <button type="submit" id="submit-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Add Testimonial</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function closeModal() {
+        document.getElementById('staff-form-id').reset();
+        document.getElementById('addModal').classList.add('hidden');
+    }
+</script>

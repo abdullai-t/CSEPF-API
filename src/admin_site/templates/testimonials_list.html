@@ -54,7 +54,7 @@
                         {% endif %}
                     </td>
                     <td class="py-2 px-4 border border-gray-300">
-                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateModal('{{ testimonial.id }}', '{{testimonial.fellow.id}}', '{{testimonial.content|escapejs}}', '{{testimonial.is_featured}}', '{{testimonial.media.url}}')">
+                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateModal('{{ testimonial.id }}', '{{testimonial.fellow.id}}', '{{testimonial.content|escapejs}}', '{{testimonial.is_featured}}', '{{testimonial.media.url}}', '{{testimonial.tag_ids}}')">
                         <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
@@ -87,7 +87,7 @@
     document.getElementById('addModal').classList.add('hidden')
     document.getElementById('testimonial-form-id').reset();
 }
-function openUpdateModal(testimonial_id, user_id, content, is_featured, media) {
+function openUpdateModal(testimonial_id, user_id, content, is_featured, media, tag_ids) {
     document.getElementById('modal-title').innerText = 'Update Testimonial';
     document.getElementById("submit-btn").innerText = 'Update Testimonial';
     document.getElementById('addModal').classList.remove('hidden');
@@ -106,6 +106,13 @@ function openUpdateModal(testimonial_id, user_id, content, is_featured, media) {
      } else {
          mediaField.innerText = '';
      }
+    const tagsArray = tag_ids.split(',');
+    for (let i = 0; i < tagsArray.length; i++) {
+        const checkbox = document.querySelector(`input[name="tags"][value="${tagsArray[i]}"]`);
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+    }
 
 }
 

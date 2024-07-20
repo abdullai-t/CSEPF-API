@@ -47,6 +47,10 @@ def list_testimonials(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
+    for t in page_obj:
+        t.tag_ids = ','.join([str(id) for id in t.tags.all().values_list('id', flat=True)])
+        
+    
     form = TestimonialForm()
     
     return render(request, 'testimonials_list.html', {'page_obj': page_obj, 'query': query, 'fellows': fellows, "form": form})

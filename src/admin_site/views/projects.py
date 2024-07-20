@@ -11,6 +11,10 @@ def projects_list(request):
 	paginator = Paginator(projects, 10)  # Show 10 projects per page.
 	page_number = request.GET.get('page')
 	page_obj = paginator.get_page(page_number)
+	for p in page_obj:
+		p.topics_ids = ','.join([str(id) for id in p.topics.all().values_list('id', flat=True)])
+		
+		print(p.topics_ids)
 	form = ProjectForm()
 	return render(request, 'projects_list.html', {'page_obj': page_obj, 'form': form})
 

@@ -3,6 +3,7 @@ from django.urls import path
 from .views.applications import applications_list, delete_application, update_status
 from .views.index import index, login_view, logout_view
 from .views.projects import delete_project,update_project, projects_list, add_project
+from .views.staff import add_staff, delete_staff, staff_list, update_staff
 from .views.testimonials import add_testimonial, delete_testimonial, list_testimonials, \
     update_testimonial
 
@@ -24,4 +25,10 @@ urlpatterns = [
     path("projects/add/", add_project, name="add_project"),
     path("projects/update/<str:id>", update_project, name="update_project"),
     path("projects/delete/<str:id>", delete_project, name="delete_project"),
+    
+#     staff
+    path('staff/', staff_list, name='staff'),
+    path('staff/add/', add_staff, name='add_staff'),
+    path('staff/update/<str:id>', update_staff, name='update_staff'),
+    path('staff/delete/<str:id>', delete_staff, name='delete_staff'),
 ]

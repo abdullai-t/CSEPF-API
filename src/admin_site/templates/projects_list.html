@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-{% load form_helpers %} <!-- Assuming you have custom template tags/helpers -->
-{% load file_url %}
-
+{% load form_helpers %}
 {% block content %}
 
 <div class="container mx-auto p-4">
@@ -57,7 +55,7 @@
                     </td>
 
                     <td class="py-2 px-4 border border-gray-300">
-                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateProjectModal('{{ project.id }}', '{{project.title|escapejs}}', '{{project.summary|escapejs}}', '{{project.document.url}}', '{{project.is_featured}}', '{{project.fellow.id}}')">
+                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateProjectModal('{{ project.id }}', '{{project.title|escapejs}}', '{{project.summary|escapejs}}', '{{project.document.url}}', '{{project.is_featured}}', '{{project.fellow.id}}', '{{project.topics_ids}}')">
                                  <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
@@ -85,12 +83,12 @@ function openAddProjectModal() {
     document.getElementById('projects-form-id').reset();
     document.getElementById('addModal').classList.remove('hidden');
 }
-function openUpdateProjectModal(projectId, title, summary, file, is_featured, fellow_id) {
+function openUpdateProjectModal(projectId, title, summary, file, is_featured, fellow_id, topics) {
     document.getElementById('modal-title').innerText = 'Update Project';
     document.getElementById("submit-btn").innerText = 'Update Project';
     document.getElementById('addModal').classList.remove('hidden');
 
-    console.log("==project_id==", projectId);
+    console.log("==project_id==", topics);
 
     let form = document.getElementById('projects-form-id');
     form.action = '/projects/update/' + projectId;
@@ -99,6 +97,14 @@ function openUpdateProjectModal(projectId, title, summary, file, is_featured, fe
     form.elements.namedItem('summary').value = summary;
     form.elements.namedItem('fellow').value = fellow_id;
     form.elements.namedItem('is_featured').checked = is_featured === "True";
+
+    const topicsArray = topics.split(',');
+    for (let i = 0; i < topicsArray.length; i++) {
+        const checkbox = document.querySelector(`input[name="topics"][value="${topicsArray[i]}"]`);
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+    }
 
     const mediaField = document.getElementById("project-media-element");
      mediaField.href = file;
