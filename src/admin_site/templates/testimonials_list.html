@@ -19,6 +19,7 @@
                     <th class="py-2 px-4 border border-gray-300 text-left">School</th>
                     <th class="py-2 px-4 border border-gray-300 text-left">Program</th>
                     <th class="py-2 px-4 border border-gray-300 text-left">Cohort</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Video</th>
                     <th class="py-2 px-4 border border-gray-300 text-left">Featured?</th>
                      <th class="py-2 px-4 border border-gray-300 text-left">Action</th>
 
@@ -39,6 +40,12 @@
                     <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.school }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.program }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.cohort }}</td>
+                    <td class="py-2 px-4 border border-gray-300">
+                        {% if testimonial.media %}
+                            <a href="{{ testimonial.media.url }}" target="_blank" class="text-blue-500 hover:text-blue-700">View</a>
+                        {% else %}
+                            N/A
+                        {% endif %}
                    <td class="py-2 px-4 border border-gray-300">
                         {% if testimonial.is_featured %}
                             <span class="text-green-500">&#10004;</span>  <!-- This will display a green check mark -->
@@ -47,7 +54,7 @@
                         {% endif %}
                     </td>
                     <td class="py-2 px-4 border border-gray-300">
-                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateModal('{{ testimonial.id }}', '{{testimonial.fellow.id}}', '{{testimonial.content|escapejs}}', '{{testimonial.is_featured}}')">
+                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateModal('{{ testimonial.id }}', '{{testimonial.fellow.id}}', '{{testimonial.content|escapejs}}', '{{testimonial.is_featured}}', '{{testimonial.media.url}}')">
                         <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
@@ -68,7 +75,7 @@
     {% include 'components/pagination.html' with page_obj=page_obj %}
 </div>
 
- {% include 'components/add_testimonial_modal.html' %}
+ {% include 'components/add_testimonial_modal.html'  %}
 
 <!-- JavaScript -->
 <script>
@@ -80,7 +87,7 @@
     document.getElementById('addModal').classList.add('hidden')
     document.getElementById('testimonial-form-id').reset();
 }
-function openUpdateModal(testimonial_id, user_id, content, is_featured) {
+function openUpdateModal(testimonial_id, user_id, content, is_featured, media) {
     document.getElementById('modal-title').innerText = 'Update Testimonial';
     document.getElementById("submit-btn").innerText = 'Update Testimonial';
     document.getElementById('addModal').classList.remove('hidden');
@@ -91,6 +98,14 @@ function openUpdateModal(testimonial_id, user_id, content, is_featured) {
     form.elements.namedItem('content').value = content;
     form.elements.namedItem('fellow').value = user_id;
     form.elements.namedItem('is_featured').checked = is_featured === "True";
+
+    const mediaField = document.getElementById("testimonial-media-element");
+     mediaField.href = media;
+     if(media){
+         mediaField.innerText = 'view current file';
+     } else {
+         mediaField.innerText = '';
+     }
 
 }
 
