@@ -47,7 +47,7 @@
                         {% endif %}
 
                     <td class="py-2 px-4 border border-gray-300">
-                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateStaffModal('{{ staff.id }}', '{{staff.user.full_name|escapejs}}', '{{staff.user.email|escapejs}}', '{{staff.role}}', '{{staff.bio|escapejs}}', '{{staff.user.picture.url}}', '{{staff.is_featured}}', '{{staff.socials}}')">
+                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateStaffModal('{{ staff.id }}', '{{staff.user.full_name|escapejs}}', '{{staff.user.email|escapejs}}', '{{staff.role}}', '{{staff.bio|escapejs}}', '{{staff.user_image_url}}', '{{staff.is_featured}}', '{{staff.socials}}')">
                               <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                               </svg>

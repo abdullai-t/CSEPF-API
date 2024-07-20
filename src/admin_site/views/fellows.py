@@ -34,6 +34,7 @@ def fellow_list(request):
 	for f in page_obj:
 		socials_str = "||".join([f"{key}#{value}" for key, value in f.user.info.get("socials", {}).items()])
 		f.socials = socials_str
+		f.user_image_url = f.user.picture.url if f.user.picture else ""
 	
 	return render(request, 'fellows_list.html', {'page_obj': page_obj, "schools": SCHOOLS})
 

@@ -49,6 +49,7 @@ def list_testimonials(request):
     
     for t in page_obj:
         t.tag_ids = ','.join([str(id) for id in t.tags.all().values_list('id', flat=True)])
+        t.media_url = t.media.url if t.media else ""
         
     
     form = TestimonialForm()

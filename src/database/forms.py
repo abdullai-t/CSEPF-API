@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project, Staff, Testimonial, UserProfile
+from .models import Presentation, Project, Staff, Testimonial, UserProfile
 
 
 class TestimonialForm(forms.ModelForm):
@@ -35,3 +35,12 @@ class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
 		fields = ['full_name', 'email', 'picture']
+		
+
+class PresentationForm(forms.ModelForm):
+	class Meta:
+		model = Presentation
+		fields = ['title', 'presenter', 'email', 'picture', 'cohort', 'summary', 'document', "is_featured"]
+		widgets = {
+			'summary': forms.Textarea(attrs={'rows': 5}),
+		}

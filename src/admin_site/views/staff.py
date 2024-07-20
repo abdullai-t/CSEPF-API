@@ -15,6 +15,7 @@ def staff_list(request):
     for s in page_obj:
         socials_str = "||".join([f"{key}#{value}" for key, value in s.user.info.get("socials", {}).items()])
         s.socials = socials_str
+        s.user_image_url = s.user.picture.url if s.user.picture else ""
     
     return render(request, 'staffs_list.html', {'page_obj': page_obj,})
 

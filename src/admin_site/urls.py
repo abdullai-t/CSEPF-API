@@ -3,6 +3,7 @@ from django.urls import path
 from .views.applications import applications_list, delete_application, update_status
 from .views.fellows import add_fellow, delete_fellow, fellow_list, update_fellow
 from .views.index import index, login_view, logout_view
+from .views.presentations import add_presentation, delete_presentation, presentations_list, update_presentation
 from .views.projects import delete_project,update_project, projects_list, add_project
 from .views.staff import add_staff, delete_staff, staff_list, update_staff
 from .views.testimonials import add_testimonial, delete_testimonial, list_testimonials, \
@@ -38,4 +39,11 @@ urlpatterns = [
     path('fellows/add/', add_fellow, name='add_fellow'),
     path('fellows/update/<str:id>', update_fellow, name='update_fellow'),
     path('fellows/delete/<str:id>', delete_fellow, name='delete_fellow'),
+    
+#     presentations
+    path('presentations/', presentations_list, name='presentations'),
+    path('presentations/add/', add_presentation, name='add_presentation'),
+    path('presentations/update/<str:id>', update_presentation, name='update_presentation'),
+    path('presentations/delete/<str:id>', delete_presentation, name='delete_presentation'),
 ]
+
