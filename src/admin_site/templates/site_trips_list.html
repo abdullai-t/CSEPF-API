@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+	<h1 class="text-2xl font-bold mb-4">Site Trips</h1>
+	<div class="flex justify-between mb-4">
+		<input type="text" id="searchTripInput" placeholder="Search trips..." onkeyup="searchTripTable()" class="px-4 py-2 border rounded-lg">
+		<button onclick="openAddSiteTripModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add New Trip</button>
+	</div>
+
+    <div class="overflow-x-auto mt-4">
+        <table class="min-w-full bg-white" id="siteTripTable">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Index</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Location</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Date</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Cohort</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Summary</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Gallery</th>
+                    <th class="py-2 px-4 border border-gray-300 text-left">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in trips %}
+                <tr>
+                    <td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>
+                    <td class="py-2 px-4 border border-gray-300">{{ trip.location }}</td>
+                    <td class="py-2 px-4 border border-gray-300">{{ trip.date }}</td>
+                    <td class="py-2 px-4 border border-gray-300">{{ trip.cohort }}</td>
+                    <td class="py-2 px-4 border border-gray-300">{{ trip.summary|truncatechars:75 }}</td>
+                    <td class="py-2 px-4 border border-gray-300">
+                        <a href="{% url 'site_trip_images' trip.id %}" class="text-blue-500 hover:text-blue-700">View Gallery</a>
+                    </td>
+                    <td class="py-2 px-4 border border-gray-300">
+                        <button class="text-blue-500 hover:text-blue-700" onclick="openUpdateTripModal('{{ trip.id }}', '{{trip.location|escapejs}}', '{{trip.date}}', '{{trip.cohort}}', '{{trip.summary|escapejs}}')">
+                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Update
+                        </button>
+                        <button class="text-red-500 hover:text-red-700" onclick="deleteTrip('{{ trip.id }}')">
+                            <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Delete
+                        </button>
+                            <button class="text-blue-500 hover:text-blue-700" onclick="openAddTripImageModal('{{ trip.id }}','{{trip.location}}')">
+                               <svg class="w-5 h-5 inline" data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                                Image
+                            </button>
+				    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% include 'components/pagination.html' with page_obj=site_trips %}
+</div>
+
+{% include 'components/add_site_trip_modal.html' %}
+{% include 'components/add_site_trip_image_modal.html' %}
+<script>
+    function openAddSiteTripModal() {
+        document.getElementById('addModal').classList.remove('hidden');
+    }
+
+    function clearModalForm() {
+        document.getElementById('site-trip-form-id').reset();
+        document.getElementById('addModal').classList.add('hidden');
+    }
+
+    function deleteTrip(id) {
+        if (confirm('Are you sure you want to delete this trip?')) {
+            window.location.href = '/site_trips/delete/' + id;
+        }
+    }
+
+    function openAddTripImageModal(id, location) {
+        document.getElementById('addImageModal').classList.remove('hidden');
+        document.getElementById('trip-image-modal-title').innerText = 'Add Site Trip Image' + ' - ' + location;
+
+        const form = document.getElementById('site-trip-image-form-id');
+        form.action = '/site_trips/add_image';
+        form.elements.namedItem('trip').value = id;
+    }
+
+    function convertDateFormat(dateString) {
+        const dateObj = new Date(dateString);
+        const day = dateObj.getDate().toString().padStart(2, '0');
+        const month = (dateObj.getMonth() + 1).toString().padStart(2, '0'); // JavaScript months are 0-based.
+        const year = dateObj.getFullYear();
+        return `${year}-${month}-${day}`;
+    }
+    function openUpdateTripModal(id, location, date, cohort, summary) {
+        document.getElementById('modal-title').innerText = 'Update Trip Info';
+        document.getElementById("submit-btn").innerText = 'Update Trip Info';
+        document.getElementById('addModal').classList.remove('hidden');
+
+        const form = document.getElementById('site-trip-form-id');
+        form.action = '/site_trips/update/' + id;
+        let changedDate = convertDateFormat(date);
+
+        form.elements.namedItem('location').value =location;
+        form.elements.namedItem('date').value =changedDate;
+        form.elements.namedItem('cohort').value =cohort;
+        form.elements.namedItem('summary').value =summary;
+
+    }
+
+
+
+    function searchTripTable() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchTripInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("siteTripTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2]; // Search by staff name
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
+
+</script>
+
+{% endblock %}

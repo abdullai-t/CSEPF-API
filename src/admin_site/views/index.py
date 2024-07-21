@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
-from database.models import Application, Fellow, Presentation, Project, Staff, Testimonial
+from database.models import Application, Fellow, Presentation, Project, SiteTrip, Staff, Testimonial
 from django.contrib.auth.decorators import login_required
 
 
@@ -13,6 +13,7 @@ def index(request):
 	num_testimonials = Testimonial.objects.count()
 	num_staff = Staff.objects.count()
 	num_projects = Project.objects.count()
+	num_site_trips = SiteTrip.objects.count()
 	
 	
 	user = request.user
@@ -24,6 +25,7 @@ def index(request):
 		'Testimonials': num_testimonials,
 		'Staff': num_staff,
 		'Projects': num_projects,
+		'Site Trips': num_site_trips,
 		
 	}
 	

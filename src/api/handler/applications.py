@@ -13,9 +13,6 @@ class ApplicationsHandler(RouteHandler):
     def registerRoutes(self) -> None:
         self.add("/applications.create", self.create_application)
         self.add("/applications.list", self.list_applications)
-        # For Super Admins
-        self.add("/applications.delete", self.delete_applications)
-        self.add("/applications.update", self.update_applications)
     
 
     def create_application(self, request):
@@ -41,8 +38,3 @@ class ApplicationsHandler(RouteHandler):
     def list_applications(self, request):
         return CustomResponse({})
     
-    def delete_applications(self, request):
-        return CustomResponse({})
-    
-    def update_applications(self, request):
-        return CustomResponse({})

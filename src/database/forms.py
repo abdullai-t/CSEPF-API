@@ -1,5 +1,5 @@
 from django import forms
-from .models import Presentation, Project, Staff, Testimonial, UserProfile
+from .models import Presentation, Project, SiteTrip, Staff, Testimonial, UserProfile, SiteTripImage
 
 
 class TestimonialForm(forms.ModelForm):
@@ -44,3 +44,19 @@ class PresentationForm(forms.ModelForm):
 		widgets = {
 			'summary': forms.Textarea(attrs={'rows': 5}),
 		}
+
+
+class SiteTripForm(forms.ModelForm):
+	class Meta:
+		model = SiteTrip
+		fields = ['location', 'summary', 'date', 'cohort']
+		widgets = {
+			'summary': forms.Textarea(attrs={'rows': 5}),
+			"date": forms.DateInput(attrs={'type': 'date'})
+		}
+		
+
+class SiteTripImageForm(forms.ModelForm):
+	class Meta:
+		model = SiteTripImage
+		fields = ['trip','image']

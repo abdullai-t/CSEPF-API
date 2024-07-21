@@ -64,6 +64,7 @@ class Application(BaseModel):
 	cohort = models.CharField(max_length=255, default=datetime.now().year)
 	resume = models.FileField(upload_to='resumes', null=True, blank=True)
 	picture = models.ImageField(upload_to='applicant_pictures', null=True, blank=True)
+	motivation = models.TextField(blank=True, null=True)
 	
 	def __str__(self) -> str:
 		return self.full_name + " - " + self.email
@@ -80,7 +81,8 @@ class Application(BaseModel):
 			"status": self.status,
 			"cohort": self.cohort,
 			"resume": self.resume.url if self.resume else None,
-			"picture": self.picture.url if self.picture else None
+			"picture": self.picture.url if self.picture else None,
+			"motivation": self.motivation
 		})
 		return data
 	
@@ -280,3 +282,38 @@ class Presentation(BaseModel):
 		verbose_name_plural = 'Presentations'
 		db_table = "presentations"
 		ordering = ['-created_at']
+		
+		
+class SiteTrip(BaseModel):
+	location = models.CharField(max_length=255)
+	date = models.DateField()
+	summary = models.TextField(blank=True, null=True)
+	cohort = models.CharField(max_length=255, default=datetime.now().year)
+	
+	def __str__(self) -> str:
+		return self.location + " - " + str(self.date)
+	
+	def to_json(self, full=False, tiny_info=False) -> dict:
+		data = super().to_json()
+		data.update({
+			"location": self.location,
+			"date": self.date,
+			"summary": self.summary,
+			"cohort": self.cohort,
+			"images": [image.to_json() for image in self.images.all()]
+		})
+		
+		
+class SiteTripImage(BaseModel):
+	trip = models.ForeignKey(SiteTrip, on_delete=models.CASCADE, related_name='images')
+	image = models.FileField(upload_to='site_trip_images')
+	
+	def __str__(self) -> str:
+		return self.trip.location + " - " + self.image.url
+	
+	def to_json(self, full=False, tiny_info=False) -> dict:
+		data = super().to_json()
+		data.update({
+			"trip": self.trip.to_json(),
+			"image": self.image.url
+		})
