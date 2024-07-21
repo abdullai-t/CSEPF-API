@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from database.forms import SiteTripForm, SiteTripImageForm
 from database.models import SiteTrip, SiteTripImage
@@ -51,7 +52,11 @@ def site_trips_list(request):
 	trip_form = SiteTripForm()
 	image_form = SiteTripImageForm()
 	
-	return render(request, 'site_trips_list.html', {'trips': trips, 'trip_form': trip_form, 'image_form': image_form})
+	paginator = Paginator(trips, 10)  # Show 10 fellow members per page.
+	page_number = request.GET.get('page')
+	page_obj = paginator.get_page(page_number)
+	
+	return render(request, 'site_trips_list.html', {'page_obj': page_obj, 'trip_form': trip_form, 'image_form': image_form})
 
 
 def site_trip_images(request, id):

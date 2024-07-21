@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for trip in trips %}
+                {% for trip in page_obj %}
                 <tr>
                     <td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ trip.location }}</td>
@@ -57,7 +57,7 @@
             </tbody>
         </table>
     </div>
-    {% include 'components/pagination.html' with page_obj=site_trips %}
+    {% include 'components/pagination.html' with page_obj=page_obj %}
 </div>
 
 {% include 'components/add_site_trip_modal.html' %}
