@@ -112,9 +112,6 @@ class Fellow(BaseModel):
 		data.update({
 			"user": self.user.to_json(),
 			"is_completed": self.is_completed,
-			# "cohort": self.cohort,
-			# "program": self.program,
-			# "school": self.school
 		})
 		return data
 	
