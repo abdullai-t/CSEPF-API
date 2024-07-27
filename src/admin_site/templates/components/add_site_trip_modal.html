@@ -1,26 +1,29 @@
-
 {% load form_helpers %}
 <div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white w-1/2 p-4 rounded-lg">
         <h2 class="text-2xl font-bold mb-4" id="modal-title">Add Site Trip</h2>
-       <form method="post" action="{% url 'add_site_trip' %}" id="site-trip-form-id" class="space-y-4 max-h-[70vh] overflow-y-auto" enctype="multipart/form-data">
+        <form method="post" action="{% url 'add_site_trip' %}" id="site-trip-form-id"
+            class="space-y-4 max-h-[70vh] overflow-y-auto" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in trip_form %}
-                <div class="mb-4">
-                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
-                    {% if field.widget.attrs.class %}
-                        {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
-                    {% else %}
-                        {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
-                    {% endif %}
-                    {% if field.help_text %}
-                        <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
-                    {% endif %}
-                </div>
+            <div class="mb-4">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label
+                    }}</label>
+                {% if field.widget.attrs.class %}
+                {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
+                {% else %}
+                {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
+                {% endif %}
+                {% if field.help_text %}
+                <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
+                {% endif %}
+            </div>
             {% endfor %}
             <div class="flex justify-end ">
-                <button type="button" onclick="clearModalForm()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
-                <button type="submit" id="submit-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Add Trip</button>
+                <button type="button" onclick="clearModalForm()"
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+                <button type="submit" id="submit-btn"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4">Add Trip</button>
             </div>
         </form>
     </div>

@@ -6,43 +6,53 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('database', '0004_alter_testimonial_media'),
+        ("database", "0004_alter_testimonial_media"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='picture',
-            field=models.ImageField(blank=True, null=True, upload_to='media/applicant_pictures'),
+            model_name="application",
+            name="picture",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="media/applicant_pictures"
+            ),
         ),
         migrations.AlterField(
-            model_name='application',
-            name='resume',
-            field=models.FileField(blank=True, null=True, upload_to='media/resumes'),
+            model_name="application",
+            name="resume",
+            field=models.FileField(blank=True, null=True, upload_to="media/resumes"),
         ),
         migrations.AlterField(
-            model_name='presentation',
-            name='document',
-            field=models.FileField(blank=True, null=True, upload_to='media/presentations'),
+            model_name="presentation",
+            name="document",
+            field=models.FileField(
+                blank=True, null=True, upload_to="media/presentations"
+            ),
         ),
         migrations.AlterField(
-            model_name='presentation',
-            name='picture',
-            field=models.ImageField(blank=True, null=True, upload_to='media/presenter_pictures'),
+            model_name="presentation",
+            name="picture",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="media/presenter_pictures"
+            ),
         ),
         migrations.AlterField(
-            model_name='project',
-            name='document',
-            field=models.FileField(blank=True, null=True, upload_to='media/projects'),
+            model_name="project",
+            name="document",
+            field=models.FileField(blank=True, null=True, upload_to="media/projects"),
         ),
         migrations.AlterField(
-            model_name='testimonial',
-            name='media',
-            field=models.FileField(blank=True, null=True, upload_to='media/testimonials'),
+            model_name="testimonial",
+            name="media",
+            field=models.FileField(
+                blank=True, null=True, upload_to="media/testimonials"
+            ),
         ),
         migrations.AlterField(
-            model_name='userprofile',
-            name='picture',
-            field=models.ImageField(blank=True, null=True, upload_to='media/user_profile_pictures'),
+            model_name="userprofile",
+            name="picture",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="media/user_profile_pictures"
+            ),
         ),
     ]

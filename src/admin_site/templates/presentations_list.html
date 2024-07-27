@@ -6,160 +6,170 @@
 <div class="container mx-auto p-4">
 	<h1 class="text-2xl font-bold mb-4">Presentations</h1>
 	<div class="flex justify-between mb-4">
-		<input type="text" id="searchPresentationInput" placeholder="Search presentations..." onkeyup="searchPresentationsTable()" class="px-4 py-2 border rounded-lg">
-		<button onclick="openAddPresentationModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add New Presentation</button>
+		<input type="text" id="searchPresentationInput" placeholder="Search presentations..."
+			onkeyup="searchPresentationsTable()" class="px-4 py-2 border rounded-lg">
+		<button onclick="openAddPresentationModal()"
+			class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add New Presentation</button>
 	</div>
 	<div class="overflow-x-auto">
 		<table class="min-w-full bg-white" id="presentationsTable">
 			<thead>
-			<tr>
-				<th class="py-2 px-4 border border-gray-300 text-left">Index</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Image</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Presenter</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Email</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Title</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Summary</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Document</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Cohort</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Featured ?</th>
-				<th class="py-2 px-4 border border-gray-300 text-left">Action</th>
-			</tr>
+				<tr>
+					<th class="py-2 px-4 border border-gray-300 text-left">Index</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Image</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Presenter</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Email</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Title</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Summary</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Document</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Cohort</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Featured ?</th>
+					<th class="py-2 px-4 border border-gray-300 text-left">Action</th>
+				</tr>
 			</thead>
 			<tbody>
-			{% for presentation in page_obj %}
-			<tr>
-				<td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>
-				<td class="py-2 px-4 border border-gray-300">
-					{% if presentation.picture %}
-					<img src="{{ presentation.picture.url }}" alt="presenter" class="w-10 h-10 rounded-full">
-					{% else %}
-					<img src="https://i.pravatar.cc/300" alt="{{ presentation.name }}" class="w-10 h-10 rounded-full">
-					{% endif %}
-				</td>
+				{% for presentation in page_obj %}
+				<tr>
+					<td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>
+					<td class="py-2 px-4 border border-gray-300">
+						{% if presentation.picture %}
+						<img src="{{ presentation.picture.url }}" alt="presenter" class="w-10 h-10 rounded-full">
+						{% else %}
+						<img src="https://i.pravatar.cc/300" alt="{{ presentation.name }}"
+							class="w-10 h-10 rounded-full">
+						{% endif %}
+					</td>
 
-				<td class="py-2 px-4 border border-gray-300">{{ presentation.presenter }}</td>
-				<td class="py-2 px-4 border border-gray-300">{{ presentation.email }}</td>
-				<td class="py-2 px-4 border border-gray-300">{{ presentation.title }}</td>
-				<td class="py-2 px-4 border border-gray-300">{{ presentation.summary|truncatechars:75 }}</td>
-                <td class="py-2 px-4 border border-gray-300">
-                    {% if presentation.document %}
-                    <a href="{{ presentation.document.url }}" target="_blank" class="text-blue-500 hover:text-blue-700">View</a>
-                    {% else %}
-                    N/A
-                    {% endif %}
-                </td>
-                <td class="py-2 px-4 border border-gray-300">{{ presentation.cohort }}</td>
+					<td class="py-2 px-4 border border-gray-300">{{ presentation.presenter }}</td>
+					<td class="py-2 px-4 border border-gray-300">{{ presentation.email }}</td>
+					<td class="py-2 px-4 border border-gray-300">{{ presentation.title }}</td>
+					<td class="py-2 px-4 border border-gray-300">{{ presentation.summary|truncatechars:75 }}</td>
+					<td class="py-2 px-4 border border-gray-300">
+						{% if presentation.document %}
+						<a href="{{ presentation.document.url }}" target="_blank"
+							class="text-blue-500 hover:text-blue-700">View</a>
+						{% else %}
+						N/A
+						{% endif %}
+					</td>
+					<td class="py-2 px-4 border border-gray-300">{{ presentation.cohort }}</td>
 
-				<td class="py-2 px-4 border border-gray-300">
-					{% if presentation.is_featured %}
-					<span class="text-green text-lg">&#10004;</span>
-					{% else %}
-					<span class="text-red text-lg">&#10006;</span>
-					{% endif %}
-				</td>
+					<td class="py-2 px-4 border border-gray-300">
+						{% if presentation.is_featured %}
+						<span class="text-green text-lg">&#10004;</span>
+						{% else %}
+						<span class="text-red text-lg">&#10006;</span>
+						{% endif %}
+					</td>
 
-				<td class="py-2 px-4 border border-gray-300">
-					<button class="text-blue-500 hover:text-blue-700" onclick="openUpdatePresentationModal('{{ presentation.id }}', '{{presentation.title|escapejs}}', '{{presentation.summary|escapejs}}', '{{presentation.document_url}}', '{{presentation.is_featured}}', '{{presentation.presenter}}', '{{presentation.email}}', '{{presentation.picture_url}}', '{{presentation.cohort}}')">
-						<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-						</svg>
-						Update
-					</button>
-					<button class="text-red-500 hover:text-red-700" onclick="deletePresentation('{{ presentation.id }}')">
-						<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-						</svg>
-						Delete
-					</button>
-				</td>
-			</tr>
-			{% endfor %}
+					<td class="py-2 px-4 border border-gray-300">
+						<button class="text-blue-500 hover:text-blue-700"
+							onclick="openUpdatePresentationModal('{{ presentation.id }}', '{{presentation.title|escapejs}}', '{{presentation.summary|escapejs}}', '{{presentation.document_url}}', '{{presentation.is_featured}}', '{{presentation.presenter}}', '{{presentation.email}}', '{{presentation.picture_url}}', '{{presentation.cohort}}')">
+							<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M5 13l4 4L19 7"></path>
+							</svg>
+							Update
+						</button>
+						<button class="text-red-500 hover:text-red-700"
+							onclick="deletePresentation('{{ presentation.id }}')">
+							<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"></path>
+							</svg>
+							Delete
+						</button>
+					</td>
+				</tr>
+				{% endfor %}
 			</tbody>
 		</table>
 	</div>
-	    {% include 'components/pagination.html' with page_obj=page_obj %}
+	{% include 'components/pagination.html' with page_obj=page_obj %}
 
 </div>
 {% include 'components/add_presentation_modal.html' %}
 
 <script>
-function openAddPresentationModal() {
-    document.getElementById('presentation-form-id').reset();
-    document.getElementById('addModal').classList.remove('hidden');
-}
-function clearModalForm() {
-        document.getElementById('presentation-form-id').reset();
-        document.getElementById('addModal').classList.add('hidden');
-    }
-function openUpdatePresentationModal(presentation_id, title, summary, _document, is_featured, presenter, email, picture, cohort) {
-    document.getElementById('modal-title').innerText = 'Update presentation Info';
-    document.getElementById("submit-btn").innerText = 'Update presentation Info';
-    document.getElementById('addModal').classList.remove('hidden');
+	function openAddPresentationModal() {
+		document.getElementById('presentation-form-id').reset();
+		document.getElementById('addModal').classList.remove('hidden');
+	}
+	function clearModalForm() {
+		document.getElementById('presentation-form-id').reset();
+		document.getElementById('addModal').classList.add('hidden');
+	}
+	function openUpdatePresentationModal(presentation_id, title, summary, _document, is_featured, presenter, email, picture, cohort) {
+		document.getElementById('modal-title').innerText = 'Update presentation Info';
+		document.getElementById("submit-btn").innerText = 'Update presentation Info';
+		document.getElementById('addModal').classList.remove('hidden');
 
 
-    let form = document.getElementById('presentation-form-id');
-    form.action = '/presentations/update/' + presentation_id;
+		let form = document.getElementById('presentation-form-id');
+		form.action = '/presentations/update/' + presentation_id;
 
-	form.elements.namedItem('presenter').value = presenter;
-	form.elements.namedItem('email').value = email;
-	form.elements.namedItem('title').value = title;
-	form.elements.namedItem('summary').value = summary;
-	form.elements.namedItem('cohort').value = cohort;
+		form.elements.namedItem('presenter').value = presenter;
+		form.elements.namedItem('email').value = email;
+		form.elements.namedItem('title').value = title;
+		form.elements.namedItem('summary').value = summary;
+		form.elements.namedItem('cohort').value = cohort;
 
 
-    form.elements.namedItem('is_featured').checked = is_featured === "True";
+		form.elements.namedItem('is_featured').checked = is_featured === "True";
 
-    form.elements.namedItem('picture').required = false;
-    form.elements.namedItem('document').required = false;
+		form.elements.namedItem('picture').required = false;
+		form.elements.namedItem('document').required = false;
 
-    const pictureField = document.getElementById("presentation-picture-element");
-    const documentField = document.getElementById("presentation-document-element");
+		const pictureField = document.getElementById("presentation-picture-element");
+		const documentField = document.getElementById("presentation-document-element");
 
-	if (picture) {
-		pictureField.href = picture;
-		pictureField.innerText = "View";
-	} else {
-		pictureField.href = "";
-		pictureField.innerText = "";
+		if (picture) {
+			pictureField.href = picture;
+			pictureField.innerText = "View";
+		} else {
+			pictureField.href = "";
+			pictureField.innerText = "";
+		}
+
+		if (_document) {
+			documentField.href = _document;
+			documentField.innerText = "View";
+		} else {
+			documentField.href = "";
+			documentField.innerText = "";
+		}
+
 	}
 
-    if(_document) {
-		documentField.href = _document;
-		documentField.innerText = "View";
-	} else {
-		documentField.href = "";
-		documentField.innerText = "";
+	function deletePresentation(presentation_id) {
+		if (confirm('Are you sure you want to delete this presentation?')) {
+			window.location.href = '/presentations/delete/' + presentation_id;
+		}
 	}
 
-}
+	function searchPresentationsTable() {
+		// Declare variables
+		var input, filter, table, tr, td, i, txtValue;
+		input = document.getElementById("searchPresentationInput");
+		filter = input.value.toUpperCase();
+		table = document.getElementById("presentationsTable");
+		tr = table.getElementsByTagName("tr");
 
-function deletePresentation(presentation_id) {
-    if (confirm('Are you sure you want to delete this presentation?')) {
-        window.location.href = '/presentations/delete/' + presentation_id;
-    }
-}
-
-function searchPresentationsTable() {
-    // Declare variables
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("searchPresentationInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("presentationsTable");
-    tr = table.getElementsByTagName("tr");
-
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2]; // Search by presentation name
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-}
+		// Loop through all table rows, and hide those who don't match the search query
+		for (i = 0; i < tr.length; i++) {
+			td = tr[i].getElementsByTagName("td")[2]; // Search by presentation name
+			if (td) {
+				txtValue = td.textContent || td.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					tr[i].style.display = "";
+				} else {
+					tr[i].style.display = "none";
+				}
+			}
+		}
+	}
 </script>
 
 {% endblock %}

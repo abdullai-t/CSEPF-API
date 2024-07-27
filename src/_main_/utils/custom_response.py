@@ -10,22 +10,18 @@ from django.http import JsonResponse
 
 
 class CustomResponse(JsonResponse):
-	def __init__(self, data=None, error=None, status=200):
-		cursor = {}
-		if data != None and isinstance(data, dict):
-			if data.get("items") != None:
-				cursor = data.get("cursor")
-				data = data.get("items")
-		
-		response = {"data": data, "error": error, "success": not error}
-		
-		super().__init__(
-			response,
-			safe=True,
-			json_dumps_params={'indent': 2},
-			status=status
-		)
-	
-	def toDict(self):
-		return json.loads(str(self.content, encoding='utf8'))
+    def __init__(self, data=None, error=None, status=200):
+        cursor = {}
+        if data != None and isinstance(data, dict):
+            if data.get("items") != None:
+                cursor = data.get("cursor")
+                data = data.get("items")
 
+        response = {"data": data, "error": error, "success": not error}
+
+        super().__init__(
+            response, safe=True, json_dumps_params={"indent": 2}, status=status
+        )
+
+    def toDict(self):
+        return json.loads(str(self.content, encoding="utf8"))

@@ -1,4 +1,5 @@
-from _main_.utils.commons import serialize_all
+from _main_.utils.commons import serialize, serialize_all
+from _main_.utils.errors import CustomError
 from database.models import Application
 
 
@@ -9,11 +10,25 @@ class ApplicationsView:
 
     def __init__(self):
         pass
-    
-    def get_all_applications(self, context, args):
-        applications = Application.objects.all()
-        res =  serialize_all(applications)
-        return res, None
-    
-    
 
+    def create_application(self, context, args) -> (dict, any):  # type: ignore
+        """
+        Create a new application
+        """
+        try:
+            application = Application.objects.create(
+                full_name=args.get("full_name"),
+                email=args.get("email"),
+                school=args.get("school"),
+                program=args.get("program"),
+                picture=args.get("picture"),
+                resume=args.get("resume"),
+                motivation=args.get("motivation"),
+            )
+
+            # TODO: add a background task to send an email to the user
+
+            return serialize(application), None
+
+        except Exception as e:
+            return None, CustomError(str(e), status=400)

@@ -8,45 +8,68 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('database', '0008_remove_userprofile_bio_fellow_bio'),
+        ("database", "0008_remove_userprofile_bio_fellow_bio"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SiteTrip',
+            name="SiteTrip",
             fields=[
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('is_deleted', models.BooleanField(default=True)),
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('info', models.JSONField(blank=True, default=dict, null=True)),
-                ('location', models.CharField(max_length=255)),
-                ('date', models.DateField()),
-                ('summary', models.TextField(blank=True, null=True)),
-                ('cohort', models.CharField(default=2024, max_length=255)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("is_deleted", models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("info", models.JSONField(blank=True, default=dict, null=True)),
+                ("location", models.CharField(max_length=255)),
+                ("date", models.DateField()),
+                ("summary", models.TextField(blank=True, null=True)),
+                ("cohort", models.CharField(default=2024, max_length=255)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='application',
-            name='motivation',
+            model_name="application",
+            name="motivation",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.CreateModel(
-            name='SiteTripImage',
+            name="SiteTripImage",
             fields=[
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('is_deleted', models.BooleanField(default=True)),
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('info', models.JSONField(blank=True, default=dict, null=True)),
-                ('image', models.FileField(upload_to='site_trip_images')),
-                ('trip', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='database.sitetrip')),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("is_deleted", models.BooleanField(default=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("info", models.JSONField(blank=True, default=dict, null=True)),
+                ("image", models.FileField(upload_to="site_trip_images")),
+                (
+                    "trip",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="images",
+                        to="database.sitetrip",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

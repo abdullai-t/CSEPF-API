@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('database', '0007_alter_userprofile_picture'),
+        ("database", "0007_alter_userprofile_picture"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='userprofile',
-            name='bio',
+            model_name="userprofile",
+            name="bio",
         ),
         migrations.AddField(
-            model_name='fellow',
-            name='bio',
+            model_name="fellow",
+            name="bio",
             field=models.TextField(blank=True, null=True),
         ),
     ]
