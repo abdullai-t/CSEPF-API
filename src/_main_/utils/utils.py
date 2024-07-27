@@ -11,8 +11,8 @@ def send_universal_email(recipients, subject, template, template_args, attachmen
         from_email = "info@csepf.com"
 
         # Render the email templates with the provided arguments
-        text_content = render_to_string(f'{template}.txt', template_args)
-        html_content = render_to_string(f'{template}.html', template_args)
+        text_content = render_to_string(template, template_args)
+        html_content = render_to_string(template, template_args)
 
         # Create the email
         msg = EmailMultiAlternatives(subject, text_content, from_email, recipients)

@@ -12,7 +12,6 @@ class ApplicationsHandler(RouteHandler):
 
     def registerRoutes(self) -> None:
         self.add("/applications.create", self.create_application)
-        self.add("/applications.list", self.list_applications)
 
     def create_application(self, request):
         context = request.context
