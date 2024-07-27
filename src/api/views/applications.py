@@ -1,5 +1,6 @@
-from _main_.utils.commons import serialize, serialize_all
+from _main_.utils.commons import serialize
 from _main_.utils.errors import CustomError
+from _main_.utils.utils import send_universal_email
 from database.models import Application
 
 
@@ -26,7 +27,12 @@ class ApplicationsView:
                 motivation=args.get("motivation"),
             )
 
-            # TODO: add a background task to send an email to the user
+            send_universal_email(
+                recipients=[args.get("email")],
+                subject="Application Received",
+                template="application_received",
+                template_args={"full_name": args.get("full_name")},
+            )
 
             return serialize(application), None
 

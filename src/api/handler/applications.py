@@ -33,14 +33,4 @@ class ApplicationsHandler(RouteHandler):
         application, err = self.views.create_application(context, args)
         if err:
             return err
-        return CustomResponse(application)
-
-    def list_applications(self, request):
-        context = request.context
-        args = context.args
-
-        applications, err = self.views.get_all_applications(context, args)
-        if err:
-            return err
-
-        return CustomResponse(applications)
+        return CustomResponse(data=application, status=200)
