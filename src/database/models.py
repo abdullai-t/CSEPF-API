@@ -103,10 +103,6 @@ class Fellow(BaseModel):
 	user = models.ForeignKey(Application, on_delete=models.CASCADE)
 	bio = models.TextField(blank=True, null=True)
 	is_completed = models.BooleanField(default=False)
-	# cohort = models.CharField(max_length=255, default=datetime.now().year)
-	# program = models.CharField(max_length=255)
-	# school = models.CharField(max_length=255)
-	# resume = models.FileField(upload_to='resumes', null=True, blank=True)
 	
 	def __str__(self) -> str:
 		return self.user.full_name + " - " + self.user.cohort
