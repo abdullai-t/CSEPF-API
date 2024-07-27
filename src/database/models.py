@@ -94,24 +94,25 @@ class Application(BaseModel):
 
 
 class Fellow(BaseModel):
-	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+	user = models.ForeignKey(Application, on_delete=models.CASCADE)
 	bio = models.TextField(blank=True, null=True)
 	is_completed = models.BooleanField(default=False)
-	cohort = models.CharField(max_length=255, default=datetime.now().year)
-	program = models.CharField(max_length=255)
-	school = models.CharField(max_length=255)
+	# cohort = models.CharField(max_length=255, default=datetime.now().year)
+	# program = models.CharField(max_length=255)
+	# school = models.CharField(max_length=255)
+	# resume = models.FileField(upload_to='resumes', null=True, blank=True)
 	
 	def __str__(self) -> str:
-		return self.user.full_name + " - " + self.cohort
+		return self.user.full_name + " - " + self.user.cohort
 	
 	def to_json(self, full=False, tiny_info=False) -> dict:
 		data = super().to_json()
 		data.update({
 			"user": self.user.to_json(),
 			"is_completed": self.is_completed,
-			"cohort": self.cohort,
-			"program": self.program,
-			"school": self.school
+			# "cohort": self.cohort,
+			# "program": self.program,
+			# "school": self.school
 		})
 		return data
 	

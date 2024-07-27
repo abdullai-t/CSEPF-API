@@ -32,7 +32,7 @@ def fellow_list(request):
 	page_obj = paginator.get_page(page_number)
 	
 	for f in page_obj:
-		socials_str = "||".join([f"{key}#{value}" for key, value in f.user.info.get("socials", {}).items()])
+		socials_str = "||".join([f"{key}#{value}" for key, value in f.info.get("socials", {}).items()])
 		f.socials = socials_str
 		f.user_image_url = f.user.picture.url if f.user.picture else ""
 	
@@ -60,15 +60,15 @@ def add_fellow(request):
 			messages.error(request, 'Error adding fellow member.')
 			return redirect('fellows')
 		
-		user.info = {
+		
+		
+		fellow = Fellow(user=user, bio=bio, is_completed=True if is_completed == 'on' else False, school=school, program=program, cohort=cohort)
+		fellow.info = {
 			"socials": {
 				"facebook": facebook,
 				"linkedin": linkedin,
 				"twitter": twitter
 			}}
-		user.save()
-		
-		fellow = Fellow(user=user, bio=bio, is_completed=True if is_completed == 'on' else False, school=school, program=program, cohort=cohort)
 		fellow.save()
 		messages.success(request, 'Fellow member added successfully.')
 	
@@ -76,35 +76,29 @@ def add_fellow(request):
 
 
 def update_fellow(request, id):
+	
 	fellow = get_object_or_404(Fellow, pk=id)
 	if request.method == "POST":
-		facebook = request.POST.get('facebook', fellow.user.info.get("socials", {}).get("facebook"))
-		linkedin = request.POST.get('linkedin', fellow.user.info.get("socials", {}).get("linkedin"))
-		twitter = request.POST.get('twitter', fellow.user.info.get("socials", {}).get("twitter"))
+		facebook = request.POST.get('facebook', fellow.info.get("socials", {}).get("facebook"))
+		linkedin = request.POST.get('linkedin', fellow.info.get("socials", {}).get("linkedin"))
+		twitter = request.POST.get('twitter', fellow.info.get("socials", {}).get("twitter"))
 		bio = request.POST.get('bio', fellow.bio)
-		is_completed = request.POST.get('is_completed', fellow.is_completed)
-		school = request.POST.get('school', fellow.school)
-		program = request.POST.get('program', fellow.program)
-		cohort = request.POST.get('cohort', fellow.cohort)
+		is_completed = request.POST.get('is_completed', fellow.is_completed)		
 		
-		user = fellow.user
-		user.full_name = request.POST.get('full_name', user.full_name)
-		user.email = request.POST.get('email', user.email)
+		applicant = fellow.user
 		if request.FILES.get('picture'):
-			user.picture = request.FILES.get('picture')
-		user.info = {
+			applicant.picture = request.FILES.get('picture')
+			applicant.save()
+
+		fellow.info = {
 			"socials": {
 				"facebook": facebook,
 				"linkedin": linkedin,
 				"twitter": twitter
 			}}
 		
-		user.save()
-		
 		fellow.bio = bio
-		fellow.school = school
-		fellow.program = program
-		fellow.cohort = cohort
+	
 		fellow.is_completed = True if is_completed == 'on' else False
 		fellow.save()
 		messages.success(request, 'Fellow member updated successfully.')
