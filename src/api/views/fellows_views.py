@@ -18,7 +18,10 @@ class FellowsView:
     
 
     def list_fellows(self, context, args):
-        applications = Application.objects.all()
-        res =  serialize_all(applications)
-        return res, None
+        try:
+            applications = Application.objects.filter(context_filter)  # Add appropriate filters
+            res = serialize_all(applications)
+            return res, None
+        except Exception as e:
+            return None, str(e)
     
