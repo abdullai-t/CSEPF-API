@@ -29,6 +29,7 @@ def update_status(request):
         status = request.POST.get("status")
         application = Application.objects.get(id=application_id)
         application.status = status
+        #TODO: create a fellow on status success and send email or send a rejection email
         application.save()
         return redirect("applications")
 
