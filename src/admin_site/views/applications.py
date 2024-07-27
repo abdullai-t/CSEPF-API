@@ -61,6 +61,7 @@ def update_status(request):
             )
             
         application.status = status
+        #TODO: create a fellow on status success and send email or send a rejection email
         application.save()
         return redirect("applications")
 

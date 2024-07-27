@@ -7,7 +7,7 @@
 	<h1 class="text-2xl font-bold mb-4">Fellows</h1>
 	<div class="flex justify-between mb-4">
 		<input type="text" id="searchFellowInput" placeholder="Search fellows..." onkeyup="searchFellowsTable()" class="px-4 py-2 border rounded-lg">
-		<button onclick="openAddFellowModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add New Fellow</button>
+		<!-- <button onclick="openAddFellowModal()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add New Fellow</button> -->
 	</div>
 	<div class="overflow-x-auto">
 		<table class="min-w-full bg-white" id="fellowsTable">
@@ -40,9 +40,9 @@
 				<td class="py-2 px-4 border border-gray-300">{{ fellow.user.full_name }}</td>
 				<td class="py-2 px-4 border border-gray-300">{{ fellow.user.email }}</td>
 				<td class="py-2 px-4 border border-gray-300">{{ fellow.bio|truncatechars:75 }}</td>
-				<td class="py-2 px-4 border border-gray-300">{{ fellow.school }}</td>
-				<td class="py-2 px-4 border border-gray-300">{{ fellow.program }}</td>
-				<td class="py-2 px-4 border border-gray-300">{{ fellow.cohort }}</td>
+				<td class="py-2 px-4 border border-gray-300">{{ fellow.user.school }}</td>
+				<td class="py-2 px-4 border border-gray-300">{{ fellow.user.program }}</td>
+				<td class="py-2 px-4 border border-gray-300">{{ fellow.user.cohort }}</td>
 				<td class="py-2 px-4 border border-gray-300">
 					{% if fellow.is_completed %}
 					<span class="text-green text-lg">&#10004;</span>
@@ -52,7 +52,7 @@
 				</td>
 
 				<td class="py-2 px-4 border border-gray-300">
-					<button class="text-blue-500 hover:text-blue-700" onclick="openUpdateFellowModal('{{ fellow.id }}', '{{fellow.user.full_name|escapejs}}', '{{fellow.user.email|escapejs}}', '{{fellow.bio}}', '{{fellow.user_image_url}}', '{{fellow.is_completed}}', '{{fellow.school}}', '{{fellow.program}}', '{{fellow.socials}}')">
+					<button class="text-blue-500 hover:text-blue-700" onclick="openUpdateFellowModal('{{ fellow.id }}', '{{fellow.user.full_name|escapejs}}', '{{fellow.bio|escapejs}}', '{{fellow.user_image_url}}', '{{fellow.is_completed}}', '{{fellow.socials}}')">
 						<svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 						</svg>
@@ -84,8 +84,8 @@ function closeModal() {
         document.getElementById('fellow-form-id').reset();
         document.getElementById('addModal').classList.add('hidden');
     }
-function openUpdateFellowModal(fellow_id,full_name, email, bio, picture, is_completed,school, program, socials) {
-    document.getElementById('modal-title').innerText = 'Update fellow Info';
+function openUpdateFellowModal(fellow_id,full_name, bio, picture, is_completed, socials) {
+    document.getElementById('modal-title').innerText = `Update Fellow Info ${full_name}`; 
     document.getElementById("submit-btn").innerText = 'Update fellow Info';
     document.getElementById('addModal').classList.remove('hidden');
 
@@ -94,11 +94,11 @@ function openUpdateFellowModal(fellow_id,full_name, email, bio, picture, is_comp
     let form = document.getElementById('fellow-form-id');
     form.action = '/fellows/update/' + fellow_id;
 
-    form.elements.namedItem('full_name').value = full_name;
-    form.elements.namedItem('email').value = email;
+    // form.elements.namedItem('full_name').value = full_name;
+    // form.elements.namedItem('email').value = email;
     form.elements.namedItem('bio').value = bio;
-    form.elements.namedItem('school').value = school;
-    form.elements.namedItem('program').value = program;
+    // form.elements.namedItem('school').value = school;
+    // form.elements.namedItem('program').value = program;
 
     form.elements.namedItem('is_completed').checked = is_completed === "True";
 
