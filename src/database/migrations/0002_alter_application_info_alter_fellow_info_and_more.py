@@ -6,48 +6,48 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('database', '0001_initial'),
+        ("database", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='application',
-            name='info',
+            model_name="application",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='fellow',
-            name='info',
+            model_name="fellow",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='policysubtopic',
-            name='info',
+            model_name="policysubtopic",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='policytopic',
-            name='info',
+            model_name="policytopic",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='presentation',
-            name='info',
+            model_name="presentation",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='staff',
-            name='info',
+            model_name="staff",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='testimonial',
-            name='info',
+            model_name="testimonial",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
         migrations.AlterField(
-            model_name='userprofile',
-            name='info',
+            model_name="userprofile",
+            name="info",
             field=models.JSONField(blank=True, default=dict, null=True),
         ),
     ]

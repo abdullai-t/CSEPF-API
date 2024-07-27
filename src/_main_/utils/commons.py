@@ -78,6 +78,7 @@ def parse_list(d):
         log.error(str(e), exc_info=True)
         return []
 
+
 def parse_dict(d: object) -> object:
     try:
         return json.loads(d)
@@ -119,6 +120,7 @@ def parse_string(s):
         log.error(str(e), exc_info=True)
         return None
 
+
 def parse_int(b):
     if not str(b).isdigit():
         raise ValueError("Input must be a digit")
@@ -127,16 +129,20 @@ def parse_int(b):
     except Exception as e:
         log.error(str(e), exc_info=True)
         return 1
-    
-    
+
+
 def parse_date(d):
     try:
         if d == "undefined" or d == "null":  # providing date as 'null' should clear it
             return None
         if len(d) == 10:
-            return datetime.strptime(d, "%Y-%m-%d").replace(tzinfo=custom_timezone_info())
+            return datetime.strptime(d, "%Y-%m-%d").replace(
+                tzinfo=custom_timezone_info()
+            )
         else:
-            return datetime.strptime(d, "%Y-%m-%d %H:%M").replace(tzinfo=custom_timezone_info())
+            return datetime.strptime(d, "%Y-%m-%d %H:%M").replace(
+                tzinfo=custom_timezone_info()
+            )
 
     except Exception as e:
         log.exception(e)
@@ -201,9 +207,7 @@ def _common_name(s):
 def validate_fields(args, checklist):
     for field in checklist:
         if field not in args:
-            return False, APIError(
-                f"You are missing: {_common_name(field)}"
-            )
+            return False, APIError(f"You are missing: {_common_name(field)}")
     return True, None
 
 
@@ -229,14 +233,12 @@ def local_time():
 
 def utc_to_local(iso_str):
     local_zone = tz.tzlocal()
-    dt_utc = datetime.datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=custom_timezone_info())
+    dt_utc = datetime.datetime.strptime(iso_str, "%Y-%m-%dT%H:%M:%SZ").replace(
+        tzinfo=custom_timezone_info()
+    )
     local_now = dt_utc.astimezone(local_zone)
     return local_now
 
 
 def encode_data_for_URL(data):
     return base64.b64encode(json.dumps(data).encode()).decode()
-
-
-
-

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('database', '0003_rename_content_presentation_summary_and_more'),
+        ("database", "0003_rename_content_presentation_summary_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='testimonial',
-            name='media',
-            field=models.FileField(blank=True, null=True, upload_to='testimonials'),
+            model_name="testimonial",
+            name="media",
+            field=models.FileField(blank=True, null=True, upload_to="testimonials"),
         ),
     ]
