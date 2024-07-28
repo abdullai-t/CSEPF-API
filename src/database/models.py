@@ -110,8 +110,10 @@ class Fellow(BaseModel):
 	def to_json(self, full=False, tiny_info=False) -> dict:
 		data = super().to_json()
 		data.update({
-			"user": self.user.to_json(),
+			"applicant": self.user.to_json(),
 			"is_completed": self.is_completed,
+			"bio": self.bio,
+            "project": Project.objects.filter(fellow=self).first().to_json() if Project.objects.filter(fellow=self).first() else None,
 		})
 		return data
 	
@@ -186,9 +188,8 @@ class Project(BaseModel):
             {
                 "title": self.title,
                 "description": self.summary,
-                "media": self.media.url if self.media else None,
-                "tags": [tag.to_json() for tag in self.tags.all()],
-                "is_published": self.is_published,
+                "document": self.document.url if self.document else None,
+                "topics": [tag.to_json() for tag in self.topics.all()],
                 "is_featured": self.is_featured,
             }
         )
