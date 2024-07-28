@@ -46,7 +46,6 @@ class UserProfile(BaseModel):
                 "email": self.email,
                 "picture": self.picture.url if self.picture else None,
                 "phone_number": self.phone_number,
-                "bio": self.bio,
             }
         )
         return data
