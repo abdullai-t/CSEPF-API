@@ -1,8 +1,9 @@
+from datetime import datetime
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
-from database.models import Application
+from _main_.utils.utils import send_universal_email
+from database.models import Application, Fellow
 from django.db.models import Q
-import random
 
 
 def applications_list(request):
@@ -18,9 +19,10 @@ def applications_list(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(
-        request, "applications_list.html", {"page_obj": page_obj, "query": query}
-    )
+    for a in page_obj:
+        a.status = a.status.capitalize()
+
+    return render(request, "applications_list.html", {"page_obj": page_obj, "query": query})
 
 
 def update_status(request):
@@ -28,6 +30,34 @@ def update_status(request):
         application_id = request.POST.get("application_id")
         status = request.POST.get("status")
         application = Application.objects.get(id=application_id)
+
+        if status.lower() == "approved":
+            # create a fellow
+            Fellow.objects.create(
+                user=application,
+                is_completed=False,
+                bio = "No bio provided",
+            )
+            # send a success email
+            send_universal_email(
+                [application.email],
+                f"CSEPF {datetime.now().year} Application Decision",
+                "application_approval_email.html",
+                {
+                    "full_name": application.full_name,
+                },
+            )
+        else:
+            # send a rejection email
+            send_universal_email(
+                [application.email],
+                f"CSEPF {datetime.now().year} Application Decision",
+                "application_rejection_email.html",
+                {
+                    "full_name": application.full_name,
+                },
+            )
+
         application.status = status
         #TODO: create a fellow on status success and send email or send a rejection email
         application.save()

@@ -103,10 +103,6 @@ class Fellow(BaseModel):
 	user = models.ForeignKey(Application, on_delete=models.CASCADE)
 	bio = models.TextField(blank=True, null=True)
 	is_completed = models.BooleanField(default=False)
-	# cohort = models.CharField(max_length=255, default=datetime.now().year)
-	# program = models.CharField(max_length=255)
-	# school = models.CharField(max_length=255)
-	# resume = models.FileField(upload_to='resumes', null=True, blank=True)
 	
 	def __str__(self) -> str:
 		return self.user.full_name + " - " + self.user.cohort
@@ -114,11 +110,10 @@ class Fellow(BaseModel):
 	def to_json(self, full=False, tiny_info=False) -> dict:
 		data = super().to_json()
 		data.update({
-			"user": self.user.to_json(),
+			"applicant": self.user.to_json(),
 			"is_completed": self.is_completed,
-			# "cohort": self.cohort,
-			# "program": self.program,
-			# "school": self.school
+			"bio": self.bio,
+            "project": Project.objects.filter(fellow=self).first().to_json() if Project.objects.filter(fellow=self).first() else None,
 		})
 		return data
 	
@@ -193,9 +188,8 @@ class Project(BaseModel):
             {
                 "title": self.title,
                 "description": self.summary,
-                "media": self.media.url if self.media else None,
-                "tags": [tag.to_json() for tag in self.tags.all()],
-                "is_published": self.is_published,
+                "document": self.document.url if self.document else None,
+                "topics": [tag.to_json() for tag in self.topics.all()],
                 "is_featured": self.is_featured,
             }
         )

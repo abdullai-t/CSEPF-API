@@ -2,12 +2,13 @@
 from _main_.utils.custom_response import CustomResponse
 from _main_.utils.route_handler import RouteHandler
 from api.views.applications import ApplicationsView
+from api.views.fellows_views import FellowsView
 
 
-class ApplicationsHandler(RouteHandler):
+class FellowsHandler(RouteHandler):
     def __init__(self):
         super().__init__()
-        self.views = ApplicationsView()
+        self.views = FellowsView()
         self.registerRoutes()
     
     def registerRoutes(self) -> None:
@@ -18,12 +19,18 @@ class ApplicationsHandler(RouteHandler):
     def get_fellows_info(self, request):
         context = request.context
         args = context.args
+
+        self.validator.expect("fellow_id", str, is_required=True)
+
+        args, err = self.validator.verify(args, strict=True)
+        if err:
+            return err
         
         fellows, err = self.views.get_fellows_info(context, args)
         if err:
             return err
         
-        return CustomResponse(fellows)
+        return CustomResponse(data=fellows, status=200)
         
     def list_fellows(self, request):
         context = request.context
@@ -33,4 +40,4 @@ class ApplicationsHandler(RouteHandler):
         if err:
             return err
         
-        return CustomResponse(fellows)
+        return CustomResponse(data=fellows, status=200)
