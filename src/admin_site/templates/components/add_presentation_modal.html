@@ -10,8 +10,7 @@
             {% if field.name == 'is_featured' %}
             <div class="mb-4">
                 <div class="mt-1">
-                    {{ field }} <label for="{{ field.id_for_label }}" class=" text-sm font-medium text-gray-700">{{
-                        field.label }}</label>
+                    {{ field }} <label for="{{ field.id_for_label }}" class=" text-sm font-medium text-gray-700">{{field.label }}</label>
                 </div>
                 {% if field.help_text %}
                 <p class="mt-2 text-sm text-gray-500">{{ field.help_text }}</p>
@@ -19,8 +18,7 @@
             </div>
             {% elif field.name == "document" %}
             <div class="mb-4">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label
-                    }}</label>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label}}</label>
                 <a href="{{presentation.media}}" target="_blank" id="presentation-document-element"
                     class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"></a>
                 <input type="file" name="document" id="document" class="mt-1 block w-full px-3 py-2 border rounded-lg">
@@ -30,8 +28,7 @@
             </div>
             {% elif field.name == "picture" %}
             <div class="mb-4">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label
-                    }}</label>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{field.label}}</label>
                 <a href="{{presentation.media}}" target="_blank" id="presentation-picture-element"
                     class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"></a>
                 <input type="file" name="picture" id="picture" class="mt-1 block w-full px-3 py-2 border rounded-lg">
@@ -43,8 +40,7 @@
             {% else %}
 
             <div class="mb-4">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label
-                    }}</label>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label}}</label>
                 {% if field.widget.attrs.class %}
                 {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
                 {% else %}

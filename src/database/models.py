@@ -186,7 +186,7 @@ class Project(BaseModel):
         data.update(
             {
                 "title": self.title,
-                "description": self.summary,
+                "summary": self.summary,
                 "document": self.document.url if self.document else None,
                 "topics": [tag.to_json() for tag in self.topics.all()],
                 "is_featured": self.is_featured,

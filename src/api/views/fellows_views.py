@@ -1,6 +1,6 @@
 from _main_.utils.commons import serialize, serialize_all
 from _main_.utils.errors import CustomError
-from database.models import Application, Fellow
+from database.models import Application, Fellow, Presentation
 
 
 class FellowsView:
@@ -42,4 +42,19 @@ class FellowsView:
         
         except Exception as e:
             return None, CustomError(str(e), status=500)
+        
+
+    def list_presentations(self, context, args) -> (list, any):  # type: ignore
+        try:
+            is_featured = args.get("is_featured", False)
+            filter = {}
+            if is_featured:
+                filter["is_featured"] = is_featured
+            
+            presentations = Presentation.objects.filter(**filter).order_by("-created_at")
+
+            return serialize_all(presentations), None
+        
+        except Exception as e:
+            return None, CustomError(str(e))
     

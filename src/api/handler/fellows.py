@@ -14,6 +14,8 @@ class FellowsHandler(RouteHandler):
     def registerRoutes(self) -> None:
         self.add("/fellows.list", self.list_fellows)
         self.add("/fellows.info", self.get_fellows_info)
+
+        self.add("/presentations.list", self.list_presentations)
     
 
     def get_fellows_info(self, request):
@@ -41,3 +43,23 @@ class FellowsHandler(RouteHandler):
             return err
         
         return CustomResponse(data=fellows, status=200)
+    
+
+    def list_presentations(self, request):
+        context = request.context
+        args = context.args
+        try:
+            self.validator.expect("is_featured", bool, is_required=False)
+            
+            args, err = self.validator.verify(args, strict=True)
+            if err:
+                return err
+    
+            presentations, err = self.views.list_presentations(context, args)
+            if err:
+                return err
+            
+            return CustomResponse(data=presentations, status=200)
+        
+        except Exception as e:
+            return CustomResponse(data=None, message=str(e), status=500)
