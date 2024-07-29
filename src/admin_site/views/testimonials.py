@@ -41,7 +41,7 @@ def list_testimonials(request):
     else:
         testimonials = Testimonial.objects.all()
 
-    fellows = Fellow.objects.filter(cohort=datetime.now().year)
+    fellows = Fellow.objects.filter(user__cohort=datetime.now().year)
 
     paginator = Paginator(testimonials, 15)  # Show 10 applications per page
     page_number = request.GET.get("page")

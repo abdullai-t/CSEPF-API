@@ -7,8 +7,7 @@
             {% csrf_token %}
             {% for field in trip_form %}
             <div class="mb-4">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label
-                    }}</label>
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label}}</label>
                 {% if field.widget.attrs.class %}
                 {{ field|add_class:'mt-1 block w-full px-3 py-2 border rounded-lg' }}
                 {% else %}
