@@ -94,7 +94,7 @@ class FellowsView:
             return None, CustomError(str(e))
         
 
-    def list_testimonials(self, context, args) -> (list, any):
+    def list_testimonials(self, context, args) -> (list, any): # type: ignore
         try:
             is_featured = args.get("is_featured", False)
             filter = {}
@@ -109,7 +109,7 @@ class FellowsView:
             return None, CustomError(str(e))
         
 
-    def list_trips(self, context, args) -> (list, any):
+    def list_trips(self, context, args) -> (list, any): # type: ignore
         try:
             latest = args.get("latest", False)
 
@@ -117,6 +117,7 @@ class FellowsView:
                 trips = SiteTrip.objects.all().order_by("-created_at")[:5]
             else:
                 trips = SiteTrip.objects.all().order_by("-created_at")
+
 
             return serialize_all(trips), None
         

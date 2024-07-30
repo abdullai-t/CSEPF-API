@@ -327,6 +327,7 @@ class SiteTrip(BaseModel):
                 "images": [image.to_json() for image in self.images.all()],
             }
         )
+        return data
 
 
 class SiteTripImage(BaseModel):
@@ -338,4 +339,5 @@ class SiteTripImage(BaseModel):
 
     def to_json(self, full=False, tiny_info=False) -> dict:
         data = super().to_json()
-        data.update({"trip": self.trip.to_json(), "image": self.image.url})
+        data.update({"image": self.image.url})
+        return data
