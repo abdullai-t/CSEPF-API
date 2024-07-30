@@ -190,6 +190,13 @@ class Project(BaseModel):
                 "document": self.document.url if self.document else None,
                 "topics": [tag.to_json() for tag in self.topics.all()],
                 "is_featured": self.is_featured,
+                "fellow": {
+                    "full_name":self.fellow.user.full_name,
+                    "email":self.fellow.user.email,
+                    "picture":self.fellow.user.picture.url if self.fellow.user.picture else None,
+                    "id":str(self.fellow.user.pk),
+                    "program":self.fellow.user.program,
+                },
             }
         )
         return data
