@@ -21,8 +21,8 @@ class ApplicationsHandler(RouteHandler):
         self.validator.expect("email", str, is_required=True)
         self.validator.expect("school", str, is_required=True)
         self.validator.expect("program", str, is_required=True)
-        self.validator.expect("picture", str, is_required=True)
-        self.validator.expect("resume", str, is_required=True)
+        self.validator.expect("picture", "file", is_required=True)
+        self.validator.expect("resume", "file", is_required=True)
         self.validator.expect("motivation", str, is_required=True)
 
         args, err = self.validator.verify(args, strict=True)

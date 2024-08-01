@@ -30,7 +30,7 @@ class ApplicationsView:
             send_universal_email(
                 recipients=[args.get("email")],
                 subject="Application Received",
-                template="application_received",
+                template="application_received.html",
                 template_args={"full_name": args.get("full_name")},
             )
 
