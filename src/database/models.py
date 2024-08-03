@@ -196,7 +196,7 @@ class Project(BaseModel):
     title = models.CharField(max_length=255)
     summary = models.TextField(blank=True, null=True)
     document = models.FileField(upload_to="projects", null=True, blank=True)
-    topics = models.ManyToManyField(PolicySubTopic, related_name="projects")
+    topics = models.ManyToManyField(PolicySubTopic, related_name="projects", blank=True, null=True)
     is_featured = models.BooleanField(default=False)
 
     def __str__(self) -> str:
@@ -235,7 +235,7 @@ class Testimonial(BaseModel):
     )
     content = models.TextField()
     media = models.FileField(upload_to="testimonials", null=True, blank=True)
-    tags = models.ManyToManyField(PolicySubTopic)
+    tags = models.ManyToManyField(PolicySubTopic, related_name="testimonials", blank=True, null=True)
     is_published = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
 
