@@ -34,9 +34,18 @@ def update_status(request):
         if status.lower() == "approved":
             # create a fellow
             Fellow.objects.create(
-                user=application,
-                is_completed=False,
+                school=application.school,
+                program=application.program,
+                cohort=application.cohort,
+                address=application.address,
+                resume=application.resume,
+                picture=application.picture,
+                full_name=application.full_name,
+                email=application.email,
+                phone_number=application.phone_number,
+                has_completed=False,
                 bio = "No bio provided",
+                motivation = application.motivation,
             )
             # send a success email
             send_universal_email(

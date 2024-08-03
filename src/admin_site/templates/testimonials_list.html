@@ -29,13 +29,13 @@
                 {% for testimonial in page_obj %}
                 <tr>
                     <td class="py-2 px-4 border border-gray-300">
-                        {% if testimonial.fellow.user.picture %}
-                            <img src="{{ testimonial.fellow.user.picture.url }}" alt="{profile" class="w-10 h-10 rounded-full">
+                        {% if testimonial.fellow.picture %}
+                            <img src="{{ testimonial.fellow.picture.url }}" alt="{profile" class="w-10 h-10 rounded-full">
                         {% else %}
-                            <img src="https://i.pravatar.cc/300" alt="profile" class="w-10 h-10 rounded-full">
+                            <img src="https://www.bestcarmods.com/wp-content/uploads/2020/05/avatar-placeholder.png" alt="profile" class="w-10 h-10 rounded-full">
                         {% endif %}
                     </td>
-                    <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.user.full_name }}</td>
+                    <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.full_name }}</td>
                    <td class="py-2 px-4 border border-gray-300">{{ testimonial.content|truncatechars:75 }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.school }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ testimonial.fellow.program }}</td>

@@ -48,7 +48,7 @@ def remove_image_from_site_trip(request, image_id):
 
 
 def site_trips_list(request):
-    trips = SiteTrip.objects.all()
+    trips = SiteTrip.objects.all().order_by("-created_at")
     trip_form = SiteTripForm()
     image_form = SiteTripImageForm()
 

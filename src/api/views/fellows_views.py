@@ -34,9 +34,9 @@ class FellowsView:
             cohort = args.get("cohort", None)
             filter = {}
             if cohort:
-                filter["user__cohort"] = cohort
+                filter["cohort"] = cohort
 
-            fellow = Fellow.objects.filter(**filter).order_by("-user__cohort")
+            fellow = Fellow.objects.filter(**filter).order_by("-cohort")
 
             return serialize_all(fellow), None
         

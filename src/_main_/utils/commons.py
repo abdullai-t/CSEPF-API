@@ -193,9 +193,11 @@ def check_length(args, field, min_length=5, max_length=40):
 
 
 def is_value(b):
-    if b and b != "undefined" and b != "NONE":
+    if isinstance(b, str):
+        b = b.lower()
+    if isinstance(b, int) and b == 0:
         return True
-    if b == "":  # an empty string is a string value
+    if b and not b in ["undefined", "null", "None", ""]:
         return True
     return False
 
