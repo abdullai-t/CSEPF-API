@@ -99,28 +99,48 @@ class Application(BaseModel):
 
 
 class Fellow(BaseModel):
-	user = models.ForeignKey(Application, on_delete=models.CASCADE)
-	bio = models.TextField(blank=True, null=True)
-	is_completed = models.BooleanField(default=False)
+    bio = models.TextField(blank=True, null=True)
+    has_completed = models.BooleanField(default=False)
+    school = models.CharField(max_length=255, blank=True, null=True)
+    program = models.CharField(max_length=255, blank=True, null=True)
+    cohort = models.CharField(max_length=255, default=datetime.now().year)
+    full_name = models.CharField(max_length=255, blank=True, null=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    phone_number = models.CharField(max_length=20,blank=True, null=True)
+    address = models.CharField(max_length=255,blank=True, null=True)
+    resume = models.FileField(upload_to="resumes", null=True, blank=True)
+    picture = models.ImageField(upload_to="fellow_pictures", null=True, blank=True)
+    motivation = models.TextField(blank=True, null=True)
+
 	
-	def __str__(self) -> str:
-		return self.user.full_name + " - " + self.user.cohort
+    def __str__(self) -> str:
+        return self.full_name + " - " + self.email + " - " + self.cohort
 	
-	def to_json(self, full=False, tiny_info=False) -> dict:
-		data = super().to_json()
-		data.update({
-			"applicant": self.user.to_json(),
-			"is_completed": self.is_completed,
-			"bio": self.bio,
-            "project": Project.objects.filter(fellow=self).first().to_json() if Project.objects.filter(fellow=self).first() else None,
-		})
-		return data
+    def to_json(self, full=False, tiny_info=False) -> dict:
+        data = super().to_json()
+        data.update(
+            {
+                "bio": self.bio,
+                "has_completed": self.has_completed,
+                "school": self.school,
+                "program": self.program,
+                "cohort": self.cohort,
+                "full_name": self.full_name,
+                "email": self.email,
+                "phone_number": self.phone_number,
+                "address": self.address,
+                "resume": self.resume.url if self.resume else None,
+                "picture": self.picture.url if self.picture else None,
+                "motivation": self.motivation,
+            }
+        )
+        return data
 	
-	class Meta:
-		verbose_name = 'Fellow'
-		verbose_name_plural = 'Fellows'
-		db_table = "fellows"
-		ordering = ['-created_at']
+    class Meta:
+        verbose_name = 'Fellow'
+        verbose_name_plural = 'Fellows'
+        db_table = "fellows"
+        ordering = ['-created_at']
 
 
 class PolicyTopic(BaseModel):
@@ -191,11 +211,11 @@ class Project(BaseModel):
                 "topics": [tag.to_json() for tag in self.topics.all()],
                 "is_featured": self.is_featured,
                 "fellow": {
-                    "full_name":self.fellow.user.full_name,
-                    "email":self.fellow.user.email,
-                    "picture":self.fellow.user.picture.url if self.fellow.user.picture else None,
-                    "id":str(self.fellow.user.pk),
-                    "program":self.fellow.user.program,
+                    "full_name":self.fellow.full_name,
+                    "email":self.fellow.email,
+                    "picture":self.fellow.picture.url if self.fellow.picture else None,
+                    "id":str(self.fellow.pk),
+                    "program":self.fellow.program,
                 },
             }
         )
@@ -219,7 +239,7 @@ class Testimonial(BaseModel):
     is_featured = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return self.fellow.user.full_name + " - " + self.content[:10]
+        return self.fellow.full_name + " - " + self.content[:10]
 
     def to_json(self, full=False, tiny_info=False) -> dict:
         data = super().to_json()
@@ -239,34 +259,6 @@ class Testimonial(BaseModel):
         verbose_name = "Testimonial"
         verbose_name_plural = "Testimonials"
         db_table = "testimonials"
-        ordering = ["-created_at"]
-
-
-class Staff(BaseModel):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    role = models.CharField(max_length=255)
-    bio = models.TextField(blank=True, null=True)
-    is_featured = models.BooleanField(default=False)
-
-    def __str__(self) -> str:
-        return self.user.full_name + " - " + self.role
-
-    def to_json(self, full=False, tiny_info=False) -> dict:
-        data = super().to_json()
-        data.update(
-            {
-                "user": self.user.to_json(),
-                "role": self.role,
-                "bio": self.bio,
-                "is_featured": self.is_featured,
-            }
-        )
-        return data
-
-    class Meta:
-        verbose_name = "Staff"
-        verbose_name_plural = "Staff"
-        db_table = "staff"
         ordering = ["-created_at"]
 
 

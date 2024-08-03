@@ -30,13 +30,13 @@
                 <tr>
                     <td class="py-2 px-4 border border-gray-300">{{ forloop.counter }}</td>
                     <td class="py-2 px-4 border border-gray-300">
-                        {% if project.fellow.user.picture %}
-                        <img src="{{ project.fellow.user.picture.url }}" alt="profile" class="w-10 h-10 rounded-full">
+                        {% if project.fellow.picture %}
+                        <img src="{{ project.fellow.picture.url }}" alt="profile" class="w-10 h-10 rounded-full">
                         {% else %}
                         <img src="https://i.pravatar.cc/300" alt="profile" class="w-10 h-10 rounded-full">
                         {% endif %}
                     </td>
-                    <td class="py-2 px-4 border border-gray-300">{{ project.fellow.user.full_name }}</td>
+                    <td class="py-2 px-4 border border-gray-300">{{ project.fellow.full_name }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ project.title }}</td>
                     <td class="py-2 px-4 border border-gray-300">{{ project.summary|truncatechars:75 }}</td>
                     <td class="py-2 px-4 border border-gray-300">

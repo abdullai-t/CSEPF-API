@@ -7,7 +7,6 @@ from database.models import (
     Presentation,
     Project,
     SiteTrip,
-    Staff,
     Testimonial,
 )
 from django.contrib.auth.decorators import login_required
@@ -19,7 +18,6 @@ def index(request):
     num_presentations = Presentation.objects.count()
     num_fellows = Fellow.objects.count()
     num_testimonials = Testimonial.objects.count()
-    num_staff = Staff.objects.count()
     num_projects = Project.objects.count()
     num_site_trips = SiteTrip.objects.count()
 
@@ -30,7 +28,6 @@ def index(request):
         "Presentations": num_presentations,
         "Fellows": num_fellows,
         "Testimonials": num_testimonials,
-        "Staff": num_staff,
         "Projects": num_projects,
         "Site Trips": num_site_trips,
     }

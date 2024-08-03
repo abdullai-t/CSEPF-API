@@ -64,12 +64,12 @@
 {% include 'components/add_site_trip_image_modal.html' %}
 <script>
     function openAddSiteTripModal() {
-        document.getElementById('addModal').classList.remove('hidden');
+        document.getElementById('addTripModal').classList.remove('hidden');
     }
 
     function clearModalForm() {
         document.getElementById('site-trip-form-id').reset();
-        document.getElementById('addModal').classList.add('hidden');
+        document.getElementById('addTripModal').classList.add('hidden');
     }
 
     function deleteTrip(id) {
@@ -97,7 +97,7 @@
     function openUpdateTripModal(id, location, date, cohort, summary) {
         document.getElementById('modal-title').innerText = 'Update Trip Info';
         document.getElementById("submit-btn").innerText = 'Update Trip Info';
-        document.getElementById('addModal').classList.remove('hidden');
+        document.getElementById('addTripModal').classList.remove('hidden');
 
         const form = document.getElementById('site-trip-form-id');
         form.action = '/site_trips/update/' + id;
@@ -110,7 +110,7 @@
 
     }
 
-    function clearModalForm() {
+    function clearImageModalForm() {
         document.getElementById('addImageModal').classList.add('hidden');
         document.getElementById('site-trip-image-form-id').reset();
     }

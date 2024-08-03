@@ -1,9 +1,9 @@
 {% load form_helpers %}
 <div id="addModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white w-1/2 p-4 rounded-lg">
+    <div class="bg-white w-2/3 p-4 rounded-lg">
         <h2 class="text-2xl font-bold mb-4" id="modal-title">Add Project</h2>
         <form method="post" action="{% url 'add_project' %}" id="projects-form-id"
-            class="space-y-4 max-h-[70vh] overflow-y-auto" enctype="multipart/form-data">
+            class="space-y-4 max-h-[70vh] overflow-y-auto px-3" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
 

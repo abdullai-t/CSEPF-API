@@ -1,9 +1,12 @@
 from django import forms
+
+from _main_.utils.constants import SCHOOLS
+
 from .models import (
+    Fellow,
     Presentation,
     Project,
     SiteTrip,
-    Staff,
     Testimonial,
     UserProfile,
     SiteTripImage,
@@ -28,13 +31,6 @@ class ProjectForm(forms.ModelForm):
             "summary": forms.Textarea(attrs={"rows": 5}),
             "topics": forms.CheckboxSelectMultiple(),
         }
-
-
-class StaffForm(forms.ModelForm):
-    class Meta:
-        model = Staff
-        fields = ["user", "role", "bio", "is_featured"]
-        widgets = {"bio": forms.Textarea(attrs={"rows": 5})}
 
 
 class UserProfileForm(forms.ModelForm):
@@ -75,3 +71,17 @@ class SiteTripImageForm(forms.ModelForm):
     class Meta:
         model = SiteTripImage
         fields = ["trip", "image"]
+
+
+class FellowForm(forms.ModelForm):
+    class Meta:
+        model = Fellow
+        fields = ["full_name", "email", "picture", "bio", "school","program", "cohort", "address", "phone_number", "resume", "has_completed"]
+        widgets = {
+            "full_name": forms.TextInput(attrs={"placeholder": "Full Name"}),
+            "email": forms.EmailInput(attrs={"placeholder": "Email"}),
+            "bio": forms.Textarea(attrs={"rows": 5}),
+            "school": forms.Select(choices=[(school, school) for school in SCHOOLS]),
+            "program": forms.TextInput(attrs={"placeholder": "Ms. Computer Science"}),
+            "cohort": forms.TextInput(attrs={"placeholder": "2020"}),
+        }
