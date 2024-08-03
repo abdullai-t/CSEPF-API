@@ -282,7 +282,7 @@ class Presentation(BaseModel):
         data.update(
             {
                 "title": self.title,
-                "media": self.document.url,
+                "media": self.document.url if self.document else None,
                 "is_published": self.is_published,
                 "presenter": self.presenter,
                 "email": self.email,
