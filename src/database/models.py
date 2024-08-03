@@ -132,6 +132,7 @@ class Fellow(BaseModel):
                 "resume": self.resume.url if self.resume else None,
                 "picture": self.picture.url if self.picture else None,
                 "motivation": self.motivation,
+                "project": Project.objects.filter(fellow=self).first().to_json() if Project.objects.filter(fellow=self).first() else None,
             }
         )
         return data
