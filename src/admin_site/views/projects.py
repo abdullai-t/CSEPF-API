@@ -26,10 +26,8 @@ def add_project(request):
         form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect("projects")
-    else:
-        form = ProjectForm()
-    return render(request, "add_project_modal.html", {"form": form})
+    
+    return redirect("projects")
 
 
 def update_project(request, id):
@@ -38,10 +36,7 @@ def update_project(request, id):
         form = ProjectForm(request.POST, request.FILES, instance=project)
         if form.is_valid():
             form.save()
-            return redirect("projects")
-    else:
-        form = ProjectForm(instance=project)
-    return render(request, "update_project_modal.html", {"form": form})
+    return redirect("projects")
 
 
 @login_required
