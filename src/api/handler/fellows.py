@@ -24,6 +24,8 @@ class FellowsHandler(RouteHandler):
         self.add("/trips.list", self.list_trips)
         self.add("/trips.info", self.get_trip_info)
 
+        self.add("/contact.us", self.contact_us)
+
     
 
     def get_fellows_info(self, request):
@@ -172,4 +174,27 @@ class FellowsHandler(RouteHandler):
         
         except Exception as e:
             return CustomResponse(data=None, error=str(e))
+        
+
+    def contact_us(self, request):
+        context = request.context
+        args = context.args
+
+        try:
+            self.validator.expect("name", str, is_required=True)
+            self.validator.expect("email", str, is_required=True)
+            self.validator.expect("message", str, is_required=True)
+
+            args, err = self.validator.verify(args, strict=True)
+            if err:
+                return err
+
+            response, err = self.views.contact_us(context, args)
+            if err:
+                return err
+            
+            return CustomResponse(data=response, status=200)
+        
+        except Exception as e:
+            return CustomResponse(data=None, error=str(e), status=500)
 

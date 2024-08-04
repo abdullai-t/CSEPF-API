@@ -1,6 +1,7 @@
 from _main_.utils.commons import serialize, serialize_all
 from _main_.utils.errors import CustomError
 from database.models import Fellow, Presentation, Project, SiteTrip, Testimonial
+from django.core.mail import send_mail
 
 
 class FellowsView:
@@ -138,6 +139,31 @@ class FellowsView:
 
             return serialize(trip), None
 
+        except Exception as e:
+            return None, CustomError(str(e))
+        
+
+    def contact_us(self, context, args) -> (dict, any):
+        try:
+            name = args.get("name")
+            email = args.get("email")
+            message = args.get("message")
+
+            if not name or not email or not message:
+                return None, CustomError("name, email and message are required")
+            
+            print(name, email, message)
+            
+            # send email
+            send_mail(
+                "Message from contact form",
+                message,
+                "info@csepf.com",
+                [email],
+                fail_silently=False,
+            )
+
+            return {"message": "Your message has been sent"}, None
         except Exception as e:
             return None, CustomError(str(e))
     
